@@ -14,6 +14,7 @@ class LaunchViewController: UIViewController {
 
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     var userJson:JSON = nil
+    var a = ""
     
     @IBOutlet weak var userPic: UIImageView!
     
@@ -23,6 +24,8 @@ class LaunchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadUserJson()
+//        sleep(10)
+        print(userJson)
         
     }
     
@@ -36,18 +39,21 @@ class LaunchViewController: UIViewController {
             let name = data["username"].stringValue
             let pictureAdd = data["profile_picture"].stringValue
             
+            self.userJson = jsonObj
+            
             self.userName.text = name
             
             if let picUrl = NSURL(string: pictureAdd){
                 if let data = NSData(contentsOfURL:picUrl){
                     self.userPic.contentMode=UIViewContentMode.ScaleAspectFill
                     self.userPic.image=UIImage(data:data)
-
+                    
+                    
         
+                }
+            }
         }
     }
-}
-}
     
     
     

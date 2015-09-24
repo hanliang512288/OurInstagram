@@ -172,6 +172,7 @@
 				20082C951BB3D2D80031651F /* Main.storyboard */,
 				20082CDF1BB410140031651F /* LaunchViewController.swift */,
 				20082C981BB3D2D80031651F /* Images.xcassets */,
+				20082CE11BB419FC0031651F /* FeedView */,
 				20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */,
 				20082CB11BB40E290031651F /* Alamofire.xcodeproj */,
 				20082C8D1BB3D2D80031651F /* Supporting Files */,
@@ -224,6 +225,13 @@
 				20082CD51BB40E410031651F /* SwiftyJSON OSX Tests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		20082CE11BB419FC0031651F /* FeedView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = FeedView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
