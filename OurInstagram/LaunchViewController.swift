@@ -24,35 +24,35 @@ class LaunchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadUserJson()
-//        sleep(10)
-        print(userJson)
-        
+
     }
     
     func loadUserJson(){
         let userReqUrl = "https://api.instagram.com/v1/users/self/?access_token=\(token)"
         Alamofire.request(.GET,userReqUrl).responseJSON{
-            (_,_,json,error) in
-
-            var jsonObj = JSON(json!)
-            let data = jsonObj["data"]
-            let name = data["username"].stringValue
-            let pictureAdd = data["profile_picture"].stringValue
-            
-            self.userJson = jsonObj
-            
-            self.userName.text = name
-            
-            if let picUrl = NSURL(string: pictureAdd){
-                if let data = NSData(contentsOfURL:picUrl){
-                    self.userPic.contentMode=UIViewContentMode.ScaleAspectFill
-                    self.userPic.image=UIImage(data:data)
+            (_,_,json,error) -> Void in
+            if json != nil{
+                var jsonObj = JSON(json!)
+                
+                    let data = jsonObj["data"]
+                    let name = data["username"].stringValue
+                    let pictureAdd = data["profile_picture"].stringValue
                     
+                    self.userJson = jsonObj
                     
-        
+                    self.userName.text = name
+                    
+                    if let picUrl = NSURL(string: pictureAdd){
+                        if let data = NSData(contentsOfURL:picUrl){
+                            self.userPic.contentMode=UIViewContentMode.ScaleAspectFill
+                            self.userPic.image=UIImage(data:data)
                 }
+                
             }
+
+           }
         }
+        
     }
     
     

@@ -16,6 +16,7 @@
 		20082CDB1BB40E650031651F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20082CB91BB40E290031651F /* Alamofire.framework */; };
 		20082CDC1BB40E650031651F /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20082CB91BB40E290031651F /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		20082CE01BB410140031651F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CDF1BB410140031651F /* LaunchViewController.swift */; };
+		20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CE41BB423B90031651F /* FeedTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,7 @@
 		20082CB11BB40E290031651F /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-master/Alamofire.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = "SwiftyJSON-master/SwiftyJSON.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20082CDF1BB410140031651F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		20082CE41BB423B90031651F /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedTableViewController.swift; path = ../FeedTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +174,7 @@
 				20082C951BB3D2D80031651F /* Main.storyboard */,
 				20082CDF1BB410140031651F /* LaunchViewController.swift */,
 				20082C981BB3D2D80031651F /* Images.xcassets */,
-				20082CE11BB419FC0031651F /* FeedView */,
+				20082CE11BB419FC0031651F /* FeedTableView */,
 				20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */,
 				20082CB11BB40E290031651F /* Alamofire.xcodeproj */,
 				20082C8D1BB3D2D80031651F /* Supporting Files */,
@@ -227,11 +229,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		20082CE11BB419FC0031651F /* FeedView */ = {
+		20082CE11BB419FC0031651F /* FeedTableView */ = {
 			isa = PBXGroup;
 			children = (
+				20082CE41BB423B90031651F /* FeedTableViewController.swift */,
 			);
-			name = FeedView;
+			name = FeedTableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -406,6 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20082C901BB3D2D80031651F /* AppDelegate.swift in Sources */,
+				20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */,
 				20082CE01BB410140031651F /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
