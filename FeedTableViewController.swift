@@ -15,34 +15,56 @@ class FeedTableViewController: UITableViewController {
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     var feedJson:JSON = nil
-    
+    var feedError:AnyObject? = nil
+    let cellIdentifier:String = "feedCell"
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        var rightDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Date",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByDate:")
-         var leftDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Location",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByLocation:")
+        self.tableView.rowHeight = 440
+        self.tableView.allowsSelection = false
         
-        self.navigationItem.setRightBarButtonItem(rightDateBarButtonItem, animated: true)
-    
-        self.navigationItem.setLeftBarButtonItem(leftDateBarButtonItem, animated: true)
+        tableView.registerNib(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        
+        super.viewDidLoad()
+        loadFeed()
+        
+//        var rightDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Date",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByDate:")
+//         var leftDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Location",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByLocation:")
+//        
+//        self.navigationItem.setRightBarButtonItem(rightDateBarButtonItem, animated: true)
+//    
+//        self.navigationItem.setLeftBarButtonItem(leftDateBarButtonItem, animated: true)
         
         self.navigationItem.title = "OurInstagram"
         
+        
+        
     }
     
     
-    func sortByDate(sender:UIButton){
-    }
-    
-    func sortByLocation(sender:UIButton){
-    }
-    
+//    func sortByDate(sender:UIButton){
+//    }
+//    
+//    func sortByLocation(sender:UIButton){
+//    }
+//    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
    
     }
 
+    func loadFeed(){
+        let feedUrl = "https://api.instagram.com/v1/users/self/feed?access_token=\(token)"
+        Alamofire.request(.GET,feedUrl).responseJSON{
+            (_,_,data,error) in
+                self.feedJson = JSON(data!)
+                self.feedError = error
+                print(self.feedJson["data"][0])
+            
+                self.tableView.reloadData()
+        }
+    }
     
 //    func loadFeed(callBack:(JSON,NSError)->())->(){
 //        
@@ -60,26 +82,25 @@ class FeedTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
-        
-        
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 0
+      
+        return self.feedJson["data"].count
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FeedTableViewCell
+        
+        cell.post = self.feedJson["data"][indexPath.row]
+        
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

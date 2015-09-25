@@ -17,6 +17,10 @@
 		20082CDC1BB40E650031651F /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20082CB91BB40E290031651F /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		20082CE01BB410140031651F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CDF1BB410140031651F /* LaunchViewController.swift */; };
 		20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CE41BB423B90031651F /* FeedTableViewController.swift */; };
+		20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */; };
+		20D43C301BB5948F008198A2 /* FeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */; };
+		20D43C431BB5A7C6008198A2 /* Haneke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D43C3E1BB5A7A8008198A2 /* Haneke.framework */; };
+		20D43C441BB5A7C6008198A2 /* Haneke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20D43C3E1BB5A7A8008198A2 /* Haneke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +101,34 @@
 			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
 			remoteInfo = "Alamofire iOS";
 		};
+		20D43C3D1BB5A7A8008198A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A095C9561980418C00CD0F4C;
+			remoteInfo = Haneke;
+		};
+		20D43C3F1BB5A7A8008198A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A095C9611980418C00CD0F4C;
+			remoteInfo = HanekeTests;
+		};
+		20D43C411BB5A7A8008198A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A0026E9A19C9BFBC004DE0C6;
+			remoteInfo = HanekeDemo;
+		};
+		20D43C451BB5A7C6008198A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A095C9551980418C00CD0F4C;
+			remoteInfo = Haneke;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -108,6 +140,7 @@
 			files = (
 				20082CD71BB40E5B0031651F /* SwiftyJSON.framework in Embed Frameworks */,
 				20082CDC1BB40E650031651F /* Alamofire.framework in Embed Frameworks */,
+				20D43C441BB5A7C6008198A2 /* Haneke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +160,9 @@
 		20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = "SwiftyJSON-master/SwiftyJSON.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20082CDF1BB410140031651F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		20082CE41BB423B90031651F /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedTableViewController.swift; path = ../FeedTableViewController.swift; sourceTree = "<group>"; };
+		20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
+		20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedTableViewCell.xib; sourceTree = "<group>"; };
+		20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Haneke.xcodeproj; path = "HanekeSwift-master/Haneke.xcodeproj"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +172,7 @@
 			files = (
 				20082CD61BB40E5B0031651F /* SwiftyJSON.framework in Frameworks */,
 				20082CDB1BB40E650031651F /* Alamofire.framework in Frameworks */,
+				20D43C431BB5A7C6008198A2 /* Haneke.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +211,7 @@
 				20082C951BB3D2D80031651F /* Main.storyboard */,
 				20082CDF1BB410140031651F /* LaunchViewController.swift */,
 				20082C981BB3D2D80031651F /* Images.xcassets */,
+				20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */,
 				20082CE11BB419FC0031651F /* FeedTableView */,
 				20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */,
 				20082CB11BB40E290031651F /* Alamofire.xcodeproj */,
@@ -233,8 +271,20 @@
 			isa = PBXGroup;
 			children = (
 				20082CE41BB423B90031651F /* FeedTableViewController.swift */,
+				20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */,
+				20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */,
 			);
 			name = FeedTableView;
+			sourceTree = "<group>";
+		};
+		20D43C381BB5A7A8008198A2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				20D43C3E1BB5A7A8008198A2 /* Haneke.framework */,
+				20D43C401BB5A7A8008198A2 /* HanekeTests.xctest */,
+				20D43C421BB5A7A8008198A2 /* HanekeDemo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +304,7 @@
 			dependencies = (
 				20082CD91BB40E5B0031651F /* PBXTargetDependency */,
 				20082CDE1BB40E650031651F /* PBXTargetDependency */,
+				20D43C461BB5A7C6008198A2 /* PBXTargetDependency */,
 			);
 			name = OurInstagram;
 			productName = OurInstagram;
@@ -289,6 +340,7 @@
 				TargetAttributes = {
 					20082C891BB3D2D80031651F = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = F5NBU4297C;
 					};
 					20082CA01BB3D2D80031651F = {
 						CreatedOnToolsVersion = 6.4;
@@ -311,6 +363,10 @@
 				{
 					ProductGroup = 20082CB21BB40E290031651F /* Products */;
 					ProjectRef = 20082CB11BB40E290031651F /* Alamofire.xcodeproj */;
+				},
+				{
+					ProductGroup = 20D43C381BB5A7A8008198A2 /* Products */;
+					ProjectRef = 20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */;
 				},
 				{
 					ProductGroup = 20082CC81BB40E410031651F /* Products */;
@@ -382,6 +438,27 @@
 			remoteRef = 20082CD41BB40E410031651F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		20D43C3E1BB5A7A8008198A2 /* Haneke.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Haneke.framework;
+			remoteRef = 20D43C3D1BB5A7A8008198A2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		20D43C401BB5A7A8008198A2 /* HanekeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HanekeTests.xctest;
+			remoteRef = 20D43C3F1BB5A7A8008198A2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		20D43C421BB5A7A8008198A2 /* HanekeDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = HanekeDemo.app;
+			remoteRef = 20D43C411BB5A7A8008198A2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -389,6 +466,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20D43C301BB5948F008198A2 /* FeedTableViewCell.xib in Resources */,
 				20082C971BB3D2D80031651F /* Main.storyboard in Resources */,
 				20082C991BB3D2D80031651F /* Images.xcassets in Resources */,
 			);
@@ -409,6 +487,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20082C901BB3D2D80031651F /* AppDelegate.swift in Sources */,
+				20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */,
 				20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */,
 				20082CE01BB410140031651F /* LaunchViewController.swift in Sources */,
 			);
@@ -439,6 +518,11 @@
 			isa = PBXTargetDependency;
 			name = "Alamofire iOS";
 			targetProxy = 20082CDD1BB40E650031651F /* PBXContainerItemProxy */;
+		};
+		20D43C461BB5A7C6008198A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Haneke;
+			targetProxy = 20D43C451BB5A7C6008198A2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -541,6 +625,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = OurInstagram/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -551,6 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = OurInstagram/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
