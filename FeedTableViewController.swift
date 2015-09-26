@@ -21,7 +21,7 @@ class FeedTableViewController: UITableViewController {
     
     
     override func viewDidLoad() {
-        self.tableView.rowHeight = 440
+        self.tableView.rowHeight = 480
         self.tableView.allowsSelection = false
         
         tableView.registerNib(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
@@ -67,7 +67,7 @@ class FeedTableViewController: UITableViewController {
             (_,_,data,error) in
                 self.feedJson = JSON(data!)
                 self.feedError = error
-                print(self.feedJson["data"][0])
+//                print(self.feedJson["data"][0])
             
                 self.tableView.reloadData()
                 self.refreshControl!.endRefreshing()
