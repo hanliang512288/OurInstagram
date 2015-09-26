@@ -66,8 +66,8 @@ class FeedTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         self.picture.image = nil
 //        like.setTitle("Like", forState: UIControlState.Normal)
-//        self.likesString = ""
-//        self.likeFlag = 0
+        self.likesString = ""
+
     }
     
     
