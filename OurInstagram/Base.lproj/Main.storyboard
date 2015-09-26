@@ -176,6 +176,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ddn-dg-LEA"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="FaO-8f-hzo">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BFx-UA-0az" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -203,7 +206,6 @@
         <!--Feed-->
         <scene sceneID="UKJ-ju-Pan">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ujC-aN-nHk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3yj-r1-hvd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Feed" image="Home-100-2" id="0cf-zG-svy"/>
                     <toolbarItems/>
@@ -216,6 +218,7 @@
                         <segue destination="l0W-h4-JNA" kind="relationship" relationship="rootViewController" id="8gE-70-9tJ"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ujC-aN-nHk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="702" y="-1662"/>
         </scene>

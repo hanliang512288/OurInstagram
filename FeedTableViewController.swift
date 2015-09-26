@@ -12,6 +12,7 @@ import SwiftyJSON
 
 class FeedTableViewController: UITableViewController {
 
+      
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     var feedJson:JSON = nil
@@ -28,6 +29,9 @@ class FeedTableViewController: UITableViewController {
         super.viewDidLoad()
         loadFeed()
         
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+
+        
 //        var rightDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Date",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByDate:")
 //         var leftDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Location",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByLocation:")
 //        
@@ -36,8 +40,6 @@ class FeedTableViewController: UITableViewController {
 //        self.navigationItem.setLeftBarButtonItem(leftDateBarButtonItem, animated: true)
         
         self.navigationItem.title = "OurInstagram"
-        
-        
         
     }
     
@@ -48,6 +50,11 @@ class FeedTableViewController: UITableViewController {
 //    func sortByLocation(sender:UIButton){
 //    }
 //    
+    
+    func handleRefresh(refreshControl: UIRefreshControl){
+        loadFeed()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -63,6 +70,7 @@ class FeedTableViewController: UITableViewController {
                 print(self.feedJson["data"][0])
             
                 self.tableView.reloadData()
+                self.refreshControl!.endRefreshing()
         }
     }
     
