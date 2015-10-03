@@ -32,6 +32,8 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var comments: UILabel!
     
+    @IBOutlet weak var portrait: UIImageView!
+    
     @IBOutlet var like: UIButton!
     
     @IBAction func like(sender: UIButton) {
@@ -67,6 +69,7 @@ class FeedTableViewCell: UITableViewCell {
         self.picture.image = nil
 //        like.setTitle("Like", forState: UIControlState.Normal)
         self.likesString = ""
+        self.portrait.image = nil
 
     }
     
@@ -82,6 +85,16 @@ class FeedTableViewCell: UITableViewCell {
 //        // Configure the view for the selected state
 //    }
     
+    func timeFormat(timestamp:Int) -> String{
+        var date = NSDate(timeIntervalSince1970: Double(timestamp))
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        formatter.timeStyle = .MediumStyle
+        let timeString = formatter.stringFromDate(date)
+        return timeString
+        
+    }
+    
     func setupPost(){
         self.name.text = self.post?["user"]["username"].stringValue
         
@@ -92,9 +105,16 @@ class FeedTableViewCell: UITableViewCell {
         
         }
         
-        self.time.text = self.post?["created_time"].stringValue
-        self.location.text = self.post?["location"].stringValue
+        if let proUrl = self.post?["user"]["profile_picture"].stringValue{
+            var url = NSURL(string:proUrl)
+            self.portrait.hnk_setImageFromURL(url!)
+        }
+        let timeStamp = self.post?["created_time"].intValue
         
+        self.time.text = timeFormat(timeStamp!)
+        
+        
+        self.location.text = self.post?["location"].stringValue
         self.numOfLikes = self.post?["likes"]["count"].stringValue.toInt()
         
         

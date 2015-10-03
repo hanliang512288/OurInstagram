@@ -17,6 +17,7 @@
 		20082CDC1BB40E650031651F /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20082CB91BB40E290031651F /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		20082CE01BB410140031651F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CDF1BB410140031651F /* LaunchViewController.swift */; };
 		20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CE41BB423B90031651F /* FeedTableViewController.swift */; };
+		206B960E1BBF98DA00FAF948 /* SwiftDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206B960D1BBF98DA00FAF948 /* SwiftDate.swift */; };
 		20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */; };
 		20D43C301BB5948F008198A2 /* FeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */; };
 		20D43C431BB5A7C6008198A2 /* Haneke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D43C3E1BB5A7A8008198A2 /* Haneke.framework */; };
@@ -87,13 +88,6 @@
 			remoteGlobalIDString = 9C7DFC651A9102BD005AA3F7;
 			remoteInfo = "SwiftyJSON OSX Tests";
 		};
-		20082CD81BB40E5B0031651F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2E4FEFDA19575BE100351305;
-			remoteInfo = "SwiftyJSON iOS";
-		};
 		20082CDD1BB40E650031651F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 20082CB11BB40E290031651F /* Alamofire.xcodeproj */;
@@ -160,6 +154,7 @@
 		20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = "SwiftyJSON-master/SwiftyJSON.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20082CDF1BB410140031651F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		20082CE41BB423B90031651F /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedTableViewController.swift; path = ../FeedTableViewController.swift; sourceTree = "<group>"; };
+		206B960D1BBF98DA00FAF948 /* SwiftDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftDate.swift; sourceTree = "<group>"; };
 		20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedTableViewCell.xib; sourceTree = "<group>"; };
 		20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Haneke.xcodeproj; path = "HanekeSwift-master/Haneke.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -211,6 +206,7 @@
 				20082C951BB3D2D80031651F /* Main.storyboard */,
 				20082CDF1BB410140031651F /* LaunchViewController.swift */,
 				20082C981BB3D2D80031651F /* Images.xcassets */,
+				206B960A1BBF984600FAF948 /* ToolBox */,
 				20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */,
 				20082CE11BB419FC0031651F /* FeedTableView */,
 				20082CC71BB40E410031651F /* SwiftyJSON.xcodeproj */,
@@ -277,6 +273,14 @@
 			name = FeedTableView;
 			sourceTree = "<group>";
 		};
+		206B960A1BBF984600FAF948 /* ToolBox */ = {
+			isa = PBXGroup;
+			children = (
+				206B960D1BBF98DA00FAF948 /* SwiftDate.swift */,
+			);
+			name = ToolBox;
+			sourceTree = "<group>";
+		};
 		20D43C381BB5A7A8008198A2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,7 +306,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				20082CD91BB40E5B0031651F /* PBXTargetDependency */,
 				20082CDE1BB40E650031651F /* PBXTargetDependency */,
 				20D43C461BB5A7C6008198A2 /* PBXTargetDependency */,
 			);
@@ -487,6 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20082C901BB3D2D80031651F /* AppDelegate.swift in Sources */,
+				206B960E1BBF98DA00FAF948 /* SwiftDate.swift in Sources */,
 				20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */,
 				20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */,
 				20082CE01BB410140031651F /* LaunchViewController.swift in Sources */,
@@ -508,11 +512,6 @@
 			isa = PBXTargetDependency;
 			target = 20082C891BB3D2D80031651F /* OurInstagram */;
 			targetProxy = 20082CA21BB3D2D80031651F /* PBXContainerItemProxy */;
-		};
-		20082CD91BB40E5B0031651F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "SwiftyJSON iOS";
-			targetProxy = 20082CD81BB40E5B0031651F /* PBXContainerItemProxy */;
 		};
 		20082CDE1BB40E650031651F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -628,6 +627,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Han (TDZC288H7P)";
 				INFOPLIST_FILE = OurInstagram/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "754f0365-cf00-4308-bb5e-5a610852d391";
@@ -641,6 +641,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Liang Han (TDZC288H7P)";
 				INFOPLIST_FILE = OurInstagram/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "754f0365-cf00-4308-bb5e-5a610852d391";

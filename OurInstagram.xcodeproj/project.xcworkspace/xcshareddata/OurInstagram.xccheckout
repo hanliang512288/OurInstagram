@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>8860132B-44B1-492B-B2A0-C24009D4BFB3</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>OurInstagram</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>6B8363EB2F5C568123529DD18D73E96AFB12BA3A</key>
 		<string>github.com:hanliang512288/OurInstagram.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>OurInstagram.xcodeproj/project.xcworkspace</string>
+	<string>OurInstagram.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6B8363EB2F5C568123529DD18D73E96AFB12BA3A</key>

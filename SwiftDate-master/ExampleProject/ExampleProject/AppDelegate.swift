@@ -1,9 +1,9 @@
- //
-//  AppDelegate.swift
-//  OurInstagram
 //
-//  Created by LarryHan on 24/09/2015.
-//  Copyright (c) 2015 LarryHan. All rights reserved.
+//  AppDelegate.swift
+//  ExampleProject
+//
+//  Created by Mark Norgren on 5/21/15.
+//
 //
 
 import UIKit
