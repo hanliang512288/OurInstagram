@@ -31,7 +31,9 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var likes: UILabel!
     
-    @IBOutlet weak var comments: UILabel!
+//    @IBOutlet weak var comments: UILabel!
+    
+    @IBOutlet weak var commentsDisplay: UILabel!
     
     @IBOutlet weak var comment: UITextField!
 
@@ -41,11 +43,15 @@ class FeedTableViewCell: UITableViewCell {
         self.comment.text = ""
         print(self.myComment)
         self.comment.resignFirstResponder()
+        self.numOfComments = self.numOfComments! + 1
+        var head = "\(numOfComments!) COMMENTS:\n"
+        self.commentsString = "\(username):\(self.myComment)\n"+self.commentsString
+        self.commentsDisplay.text = head + self.commentsString
     }
     
     @IBOutlet weak var portrait: UIImageView!
     
-    @IBOutlet var like: UIButton!
+   
     
   
 
@@ -54,13 +60,13 @@ class FeedTableViewCell: UITableViewCell {
         self.likeFlag += 1
         var remain = self.likeFlag % 2
         if remain == 1{
-            
-//            like.setTitle("Dislike", forState: UIControlState.Normal)
+            sender.setTitle("Dislike", forState: UIControlState.Normal)
+//            self.like.setTitle("Dislike", forState: UIControlState.Normal)
             var likesHead = "\(numOfLikes! + 1) LIKES:\n"
             self.likes.text = likesHead + "\(username)," + self.likesString
 
         }else{
-//            like.setTitle("Like", forState: UIControlState.Normal)
+            sender.setTitle("Like", forState: UIControlState.Normal)
             var likesHead = "\(numOfLikes!) LIKES:\n"
             self.likes.text = likesHead + self.likesString
         }
@@ -78,6 +84,7 @@ class FeedTableViewCell: UITableViewCell {
         self.picture.image = nil
 //        like.setTitle("Like", forState: UIControlState.Normal)
         self.likesString = ""
+        self.commentsString = ""
         self.portrait.image = nil
 //        self.comments.delegate = self
 
@@ -114,6 +121,23 @@ class FeedTableViewCell: UITableViewCell {
         
     }
     
+    func displayComments(commentsJson:SwiftyJSON.JSON)->String{
+        self.numOfComments! = commentsJson["count"].intValue
+        var numOfComInJson = commentsJson["data"].count
+        var head = "\(self.numOfComments!) COMMENTS: \n"
+        var commentsData = commentsJson["data"]
+        if numOfComInJson>0{
+            var numOfDisplay = min(numOfComInJson,8)
+            for i in 0...(numOfDisplay-1){
+                var name = commentsData[i]["from"]["username"].string!
+                var text = commentsData[i]["text"].string!
+                
+                self.commentsString = self.commentsString+name+":"+text+"\n"
+            }
+        }
+        return head+self.commentsString
+    }
+    
     func setupPost(){
         
         //Display name
@@ -121,10 +145,8 @@ class FeedTableViewCell: UITableViewCell {
         
         //Display profile picture of feed user
         if let picUrl = self.post?["images"]["low_resolution"]["url"].stringValue{
-            
             var url = NSURL(string: picUrl)
             self.picture.hnk_setImageFromURL(url!)
-        
         }
         
         //Display post feed picture
@@ -145,11 +167,22 @@ class FeedTableViewCell: UITableViewCell {
         var likesHead = "\(self.numOfLikes!) LIKES:\n"
         let likeArray = self.post!["likes"]["data"]
         let likeArrayLength = likeArray.count
-        for ele in 0...(likeArrayLength-2){
-            self.likesString = self.likesString + likeArray[ele]["username"].stringValue + "," + likeArray[likeArrayLength-1]["username"].stringValue
+        
+        //Here got some question need to be modified
+        if likeArrayLength>1{
+            for ele in 0...(likeArrayLength-2){
+                self.likesString = self.likesString + likeArray[ele]["username"].stringValue + ","        }
+             self.likesString = self.likesString  + likeArray[likeArrayLength-1]["username"].stringValue
+            
+        }else if likeArrayLength>0{
+            self.likesString = self.likesString  + likeArray[likeArrayLength-1]["username"].stringValue
         }
+        
         self.likes.text = likesHead + self.likesString
         
+        //Display comments
+        var commentsJson = self.post?["comments"]
+        self.commentsDisplay.text = displayComments(commentsJson!)
         
         
     }
