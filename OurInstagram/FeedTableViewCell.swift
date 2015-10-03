@@ -15,10 +15,11 @@ class FeedTableViewCell: UITableViewCell {
     
     let username = "mobileprogram1234"
     var numOfLikes:Int? = 0
-    var numOfComments:Int = 0
+    var numOfComments:Int? = 0
     var likesString = ""
     var commentsString = ""
     var likeFlag = 0
+    var myComment = ""
     
     @IBOutlet weak var name: UILabel!
     
@@ -32,10 +33,23 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var comments: UILabel!
     
+    @IBOutlet weak var comment: UITextField!
+
+    @IBAction func send(sender: UIButton) {
+        
+        self.myComment = self.comment.text
+        self.comment.text = ""
+        print(self.myComment)
+        self.comment.resignFirstResponder()
+    }
+    
     @IBOutlet weak var portrait: UIImageView!
     
     @IBOutlet var like: UIButton!
     
+  
+
+   
     @IBAction func like(sender: UIButton) {
         self.likeFlag += 1
         var remain = self.likeFlag % 2
@@ -52,12 +66,7 @@ class FeedTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func comment(sender: UIButton) {
-        
-    }
 
-    
-    
     var post: SwiftyJSON.JSON? {
         didSet {
             // after 'post' is assigned by a value
@@ -70,6 +79,7 @@ class FeedTableViewCell: UITableViewCell {
 //        like.setTitle("Like", forState: UIControlState.Normal)
         self.likesString = ""
         self.portrait.image = nil
+//        self.comments.delegate = self
 
     }
     
@@ -77,6 +87,15 @@ class FeedTableViewCell: UITableViewCell {
 //    override func awakeFromNib() {
 //        super.awakeFromNib()
 //        // Initialization code
+//        self.comments.placeholder = "Comments"
+//        self.comments.returnKeyType = UIReturnKeyType.Done
+//        
+//    }
+//    
+//    func textFieldShouldReturn(textField:UITextField)->Bool{
+//        textField.resignFirstResponder()
+//        print("abvc")
+//        return true;
 //    }
 
 //    override func setSelected(selected: Bool, animated: Bool) {
@@ -96,8 +115,11 @@ class FeedTableViewCell: UITableViewCell {
     }
     
     func setupPost(){
+        
+        //Display name
         self.name.text = self.post?["user"]["username"].stringValue
         
+        //Display profile picture of feed user
         if let picUrl = self.post?["images"]["low_resolution"]["url"].stringValue{
             
             var url = NSURL(string: picUrl)
@@ -105,31 +127,30 @@ class FeedTableViewCell: UITableViewCell {
         
         }
         
+        //Display post feed picture
         if let proUrl = self.post?["user"]["profile_picture"].stringValue{
             var url = NSURL(string:proUrl)
             self.portrait.hnk_setImageFromURL(url!)
         }
-        let timeStamp = self.post?["created_time"].intValue
         
+        //Display post time
+        let timeStamp = self.post?["created_time"].intValue
         self.time.text = timeFormat(timeStamp!)
         
-        
+        //Display location
         self.location.text = self.post?["location"].stringValue
+        
+        //Display number of likes and likes
         self.numOfLikes = self.post?["likes"]["count"].stringValue.toInt()
-        
-        
         var likesHead = "\(self.numOfLikes!) LIKES:\n"
-        
         let likeArray = self.post!["likes"]["data"]
-        
         let likeArrayLength = likeArray.count
-        
         for ele in 0...(likeArrayLength-2){
-            
             self.likesString = self.likesString + likeArray[ele]["username"].stringValue + "," + likeArray[likeArrayLength-1]["username"].stringValue
         }
-        
         self.likes.text = likesHead + self.likesString
+        
+        
         
     }
     

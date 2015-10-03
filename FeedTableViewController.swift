@@ -21,7 +21,7 @@ class FeedTableViewController: UITableViewController {
     
     
     override func viewDidLoad() {
-        self.tableView.rowHeight = 480
+        self.tableView.rowHeight = 700
         self.tableView.allowsSelection = false
         
         tableView.registerNib(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
