@@ -9,11 +9,16 @@
 import UIKit
 import SwiftyJSON
 import Haneke
+import Alamofire
+import MBProgressHUD
 
 class FeedTableViewCell: UITableViewCell {
 
     
     let username = "mobileprogram1234"
+    let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
+    
+    var mediaID = ""
     var numOfLikes:Int? = 0
     var numOfComments:Int? = 0
     var likesString = ""
@@ -47,26 +52,67 @@ class FeedTableViewCell: UITableViewCell {
         var head = "\(numOfComments!) COMMENTS:\n"
         self.commentsString = "\(username):\(self.myComment)\n"+self.commentsString
         self.commentsDisplay.text = head + self.commentsString
+        
+        var commentURL = "https://api.instagram.com/v1/media/\(self.mediaID)/comments"
+        
+        Alamofire.request(.POST,commentURL).responseJSON{
+            (_,_,data,error)->Void in
+            
+            var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+            hud.mode = MBProgressHUDMode.Text
+            hud.labelText = "Comment response is"
+            hud.detailsLabelText = "\(data)"
+            hud.hide(true, afterDelay: 1)
+            
+        }
     }
     
     @IBOutlet weak var portrait: UIImageView!
     
    
     
+    @IBOutlet weak var likeOutlet: UIButton!
   
-
    
     @IBAction func like(sender: UIButton) {
         self.likeFlag += 1
         var remain = self.likeFlag % 2
         if remain == 1{
-            sender.setTitle("Dislike", forState: UIControlState.Normal)
-//            self.like.setTitle("Dislike", forState: UIControlState.Normal)
+            var likeURL = "https://api.instagram.com/v1/media/\(self.mediaID)/likes"
+            
+            Alamofire.request(.POST,likeURL).responseJSON{
+                (_,_,data,error)->Void in
+                
+                var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+                hud.mode = MBProgressHUDMode.Text
+                hud.labelText = "Like response is"
+                hud.detailsLabelText = "\(data)"
+                hud.hide(true, afterDelay: 1)
+                
+                
+            }
+            
+            self.likeOutlet.setTitle("Dislike", forState: UIControlState.Normal)
             var likesHead = "\(numOfLikes! + 1) LIKES:\n"
             self.likes.text = likesHead + "\(username)," + self.likesString
 
         }else{
-            sender.setTitle("Like", forState: UIControlState.Normal)
+            
+            var dislikeURL = "https://api.instagram.com/v1/media/\(self.mediaID)/likes?access_token=\(token)"
+            
+            Alamofire.request(.DELETE,dislikeURL).responseJSON{
+                (_,_,data,error)->Void in
+                
+                var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+                hud.mode = MBProgressHUDMode.Text
+                hud.labelText = "Dislike response is"
+                hud.detailsLabelText = "\(data)"
+                hud.hide(true, afterDelay: 1)
+                
+                
+            }
+            
+            self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
             var likesHead = "\(numOfLikes!) LIKES:\n"
             self.likes.text = likesHead + self.likesString
         }
@@ -86,6 +132,7 @@ class FeedTableViewCell: UITableViewCell {
         self.likesString = ""
         self.commentsString = ""
         self.portrait.image = nil
+        self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
 //        self.comments.delegate = self
 
     }
@@ -184,7 +231,8 @@ class FeedTableViewCell: UITableViewCell {
         var commentsJson = self.post?["comments"]
         self.commentsDisplay.text = displayComments(commentsJson!)
         
-        
+        //Assign MediaID
+        self.mediaID = self.post!["id"].stringValue
     }
     
 }

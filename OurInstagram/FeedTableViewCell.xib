@@ -92,6 +92,7 @@
                 <outlet property="Name" destination="EfK-jt-RvB" id="ZMh-PG-xG3"/>
                 <outlet property="comment" destination="R7z-hZ-rqm" id="Iz7-Jp-UwQ"/>
                 <outlet property="commentsDisplay" destination="3Pa-im-hRW" id="D4q-tk-E6x"/>
+                <outlet property="likeOutlet" destination="TB2-mg-G1i" id="Bnk-yV-G1V"/>
                 <outlet property="likes" destination="M75-UT-Shr" id="Wzb-QO-T55"/>
                 <outlet property="location" destination="JfQ-QH-egJ" id="4da-OT-jbF"/>
                 <outlet property="name" destination="EfK-jt-RvB" id="vJ7-cS-UUZ"/>

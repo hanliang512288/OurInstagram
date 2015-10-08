@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="JIc-E1-Sd2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Launch View Controller-->
@@ -65,7 +66,7 @@
                     <connections>
                         <segue destination="3yj-r1-hvd" kind="relationship" relationship="viewControllers" id="wjN-FM-pEw"/>
                         <segue destination="jZU-Qf-nF1" kind="relationship" relationship="viewControllers" id="0p2-yR-cks"/>
-                        <segue destination="9I3-fZ-LMQ" kind="relationship" relationship="viewControllers" id="uIE-i4-PfW"/>
+                        <segue destination="CL9-4w-yFu" kind="relationship" relationship="viewControllers" id="uIE-i4-PfW"/>
                         <segue destination="FDC-m7-vKp" kind="relationship" relationship="viewControllers" id="OVJ-Vw-omX"/>
                         <segue destination="A7S-TA-3Fi" kind="relationship" relationship="viewControllers" id="5i9-b7-DaG"/>
                     </connections>
@@ -95,10 +96,10 @@
             </objects>
             <point key="canvasLocation" x="1676" y="238"/>
         </scene>
-        <!--Photo-->
+        <!--Photo View Controller-->
         <scene sceneID="9xW-BS-rds">
             <objects>
-                <viewController id="9I3-fZ-LMQ" sceneMemberID="viewController">
+                <viewController id="9I3-fZ-LMQ" customClass="PhotoViewController" customModule="OurInstagram" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aLm-CR-pi1"/>
                         <viewControllerLayoutGuide type="bottom" id="7nq-7T-AXi"/>
@@ -106,13 +107,407 @@
                     <view key="view" contentMode="scaleToFill" id="4yB-uo-4pq">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ABx-ly-drv">
+                                <rect key="frame" x="100" y="125" width="400" height="350"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="350" id="Q3Z-3J-Fdt"/>
+                                    <constraint firstAttribute="width" constant="400" id="yX4-CC-alW"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LAV-d8-1hG">
+                                <rect key="frame" x="255" y="505" width="90" height="30"/>
+                                <state key="normal" title="Crop Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="eZb-Re-tlw" kind="presentation" identifier="PhotoEditView" id="sEV-2Y-28X"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="LAV-d8-1hG" secondAttribute="centerX" id="0cs-tO-0R6"/>
+                            <constraint firstItem="ABx-ly-drv" firstAttribute="top" secondItem="aLm-CR-pi1" secondAttribute="bottom" constant="61" id="RQ2-Va-wvn"/>
+                            <constraint firstItem="7nq-7T-AXi" firstAttribute="top" secondItem="LAV-d8-1hG" secondAttribute="bottom" constant="16" id="duI-SN-f9r"/>
+                            <constraint firstAttribute="centerX" secondItem="ABx-ly-drv" secondAttribute="centerX" id="q86-pc-Vi8"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Photo" image="Camera-100" id="0sG-ke-UFS"/>
+                    <navigationItem key="navigationItem" id="8Bh-Dy-XmG">
+                        <barButtonItem key="leftBarButtonItem" title="Library" id="BB5-uC-1IO">
+                            <connections>
+                                <action selector="photoLibraryButton:" destination="9I3-fZ-LMQ" id="00a-Bc-aUH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Camera" id="c0p-wx-2rQ">
+                            <connections>
+                                <action selector="photoCameraButton:" destination="9I3-fZ-LMQ" id="jU3-cq-4be"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="ABx-ly-drv" id="bDx-gj-5CB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rMT-lN-9j2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="890" y="1212"/>
+            <point key="canvasLocation" x="1702" y="1212"/>
+        </scene>
+        <!--Photo Crop View Controller-->
+        <scene sceneID="yeT-4m-6rn">
+            <objects>
+                <viewController id="eZb-Re-tlw" customClass="PhotoCropViewController" customModule="OurInstagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P2P-uQ-SDC"/>
+                        <viewControllerLayoutGuide type="bottom" id="5Li-Fh-jUO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Z2f-yX-Rha">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEM-b4-ySF">
+                                <rect key="frame" x="16" y="20" width="50" height="30"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="eZb-Re-tlw" eventType="touchUpInside" id="NZ4-jJ-IeS"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O6w-Ib-MRC">
+                                <rect key="frame" x="534" y="20" width="50" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Q2m-Zh-8Qs" kind="presentation" identifier="PhotoEdit" id="j7Q-Ti-wui"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NHi-jl-SHx">
+                                <rect key="frame" x="100" y="100" width="400" height="330"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="6Hd-NG-WN9"/>
+                                    <constraint firstAttribute="width" constant="400" id="9ti-VO-Uzf"/>
+                                    <constraint firstAttribute="width" constant="400" id="Tjm-YZ-hvy"/>
+                                    <constraint firstAttribute="height" constant="330" id="lbZ-6t-AG7"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="6Hd-NG-WN9"/>
+                                        <exclude reference="9ti-VO-Uzf"/>
+                                    </mask>
+                                </variation>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="NHi-jl-SHx" secondAttribute="centerX" id="1im-vo-89Z"/>
+                            <constraint firstItem="NHi-jl-SHx" firstAttribute="top" secondItem="P2P-uQ-SDC" secondAttribute="bottom" constant="80" id="DcC-dq-ov0"/>
+                            <constraint firstItem="NHi-jl-SHx" firstAttribute="top" secondItem="P2P-uQ-SDC" secondAttribute="bottom" constant="80" id="O4B-7V-jG3"/>
+                            <constraint firstItem="HEM-b4-ySF" firstAttribute="top" secondItem="P2P-uQ-SDC" secondAttribute="bottom" id="RAn-Lu-CSD"/>
+                            <constraint firstItem="HEM-b4-ySF" firstAttribute="leading" secondItem="Z2f-yX-Rha" secondAttribute="leadingMargin" id="jll-3m-hgJ"/>
+                            <constraint firstAttribute="centerX" secondItem="NHi-jl-SHx" secondAttribute="centerX" id="nDj-Ed-JEH"/>
+                            <constraint firstItem="O6w-Ib-MRC" firstAttribute="leading" secondItem="Z2f-yX-Rha" secondAttribute="leadingMargin" constant="518" id="spa-e0-fJq"/>
+                            <constraint firstItem="O6w-Ib-MRC" firstAttribute="trailing" secondItem="Z2f-yX-Rha" secondAttribute="trailingMargin" id="y5F-u5-PLw"/>
+                            <constraint firstItem="O6w-Ib-MRC" firstAttribute="trailing" secondItem="Z2f-yX-Rha" secondAttribute="trailingMargin" id="yW4-Yi-AAs"/>
+                            <constraint firstItem="O6w-Ib-MRC" firstAttribute="top" secondItem="P2P-uQ-SDC" secondAttribute="bottom" id="ywj-03-a32"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="DcC-dq-ov0"/>
+                                <exclude reference="nDj-Ed-JEH"/>
+                                <exclude reference="spa-e0-fJq"/>
+                                <exclude reference="yW4-Yi-AAs"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="X2E-eo-aRA"/>
+                    <connections>
+                        <outlet property="scrollView" destination="NHi-jl-SHx" id="ENW-NQ-j2B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OYv-T1-vnT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2686" y="1212"/>
+        </scene>
+        <!--Photo Edit View Controller-->
+        <scene sceneID="JBA-aK-eC1">
+            <objects>
+                <viewController id="Q2m-Zh-8Qs" customClass="PhotoEditViewController" customModule="OurInstagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PnV-ZM-glo"/>
+                        <viewControllerLayoutGuide type="bottom" id="Kfy-rV-ori"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BQ7-e0-yVh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="okz-65-xZM">
+                                <rect key="frame" x="16" y="20" width="50" height="30"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="5M5-Eh-wq5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IV8-xk-pKc">
+                                <rect key="frame" x="275" y="20" width="50" height="30"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoSaveButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="ZEB-nt-z1o"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mn3-pi-0gK">
+                                <rect key="frame" x="533" y="20" width="50" height="30"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="CFG-ay-7ef" kind="presentation" identifier="PhotoPost" id="j9i-md-X6C"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4M-In-bej">
+                                <rect key="frame" x="16" y="550" width="100" height="30"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoOriginalButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="VM8-uM-IPJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ex8-Vy-HDy">
+                                <rect key="frame" x="152" y="550" width="100" height="30"/>
+                                <state key="normal" title="SepiaTone">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoSepiaToneButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="Ebf-uu-u7G"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t9Y-UL-SO3">
+                                <rect key="frame" x="413" y="550" width="100" height="30"/>
+                                <state key="normal" title="Mono">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoMonoButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="ohT-SH-Bq8"/>
+                                </connections>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-0.5" maxValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1c9-kh-aYW">
+                                <rect key="frame" x="150" y="456" width="300" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="296" id="hWv-77-x2g"/>
+                                    <constraint firstAttribute="height" constant="30" id="nN2-H7-iOc"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="photoBrightnessChange:" destination="Q2m-Zh-8Qs" eventType="valueChanged" id="LIL-2m-m60"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.25" minValue="0.0" maxValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cUR-xV-hfl">
+                                <rect key="frame" x="150" y="502" width="300" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="296" id="1lJ-u5-vvA"/>
+                                    <constraint firstAttribute="height" constant="30" id="Ph0-AM-bgy"/>
+                                    <constraint firstAttribute="width" constant="296" id="ZrG-WA-3Xk"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="1lJ-u5-vvA"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="photoContrastChange:" destination="Q2m-Zh-8Qs" eventType="valueChanged" id="o4c-bW-JF3"/>
+                                </connections>
+                            </slider>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Bc-fV-ttq">
+                                <rect key="frame" x="100" y="93" width="400" height="330"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="400" id="KEJ-gq-8DV"/>
+                                    <constraint firstAttribute="height" constant="350" id="mry-PS-UYL"/>
+                                    <constraint firstAttribute="width" constant="400" id="xEZ-41-kP9"/>
+                                    <constraint firstAttribute="height" constant="330" id="y0P-aB-lpc"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="KEJ-gq-8DV"/>
+                                        <exclude reference="mry-PS-UYL"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHS-wf-he1">
+                                <rect key="frame" x="283" y="550" width="100" height="30"/>
+                                <state key="normal" title="Transfer">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoTransferButton:" destination="Q2m-Zh-8Qs" eventType="touchUpInside" id="280-nK-SUa"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="okz-65-xZM" firstAttribute="leading" secondItem="BQ7-e0-yVh" secondAttribute="leadingMargin" id="1Jb-2s-uHD"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="GHS-wf-he1" secondAttribute="bottom" constant="20" id="3m1-ll-9vG"/>
+                            <constraint firstAttribute="centerX" secondItem="1c9-kh-aYW" secondAttribute="centerX" id="5By-19-GG8"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="50" id="6yZ-0V-3CI"/>
+                            <constraint firstAttribute="centerX" secondItem="cUR-xV-hfl" secondAttribute="centerX" id="7xl-kw-agt"/>
+                            <constraint firstItem="j4M-In-bej" firstAttribute="leading" secondItem="BQ7-e0-yVh" secondAttribute="leadingMargin" id="AJJ-Rv-eaK"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="leading" secondItem="j4M-In-bej" secondAttribute="trailing" constant="26" id="CXB-pR-u2Y"/>
+                            <constraint firstItem="okz-65-xZM" firstAttribute="leading" secondItem="BQ7-e0-yVh" secondAttribute="leadingMargin" id="DTU-KM-Aec"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="j4M-In-bej" secondAttribute="bottom" constant="20" id="Fde-tq-Qae"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="okz-65-xZM" secondAttribute="trailing" constant="518" id="GGJ-Xb-Kif"/>
+                            <constraint firstItem="mn3-pi-0gK" firstAttribute="top" secondItem="PnV-ZM-glo" secondAttribute="bottom" id="Glc-Yp-1gV"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="leading" secondItem="j4M-In-bej" secondAttribute="trailing" constant="8" id="L12-N5-A7s"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="leading" secondItem="j4M-In-bej" secondAttribute="trailing" constant="59" id="MMO-qh-qcR"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="leading" secondItem="j4M-In-bej" secondAttribute="trailing" constant="36" id="Mnp-Kc-kCg"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="30" id="NfR-pt-Itw"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="Ex8-Vy-HDy" secondAttribute="bottom" constant="20" id="Oxl-Uc-2sm"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="17" id="QlD-7D-6hV"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="t9Y-UL-SO3" secondAttribute="bottom" constant="20" id="S4D-fo-eLn"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="trailing" secondItem="BQ7-e0-yVh" secondAttribute="trailingMargin" id="S5O-Du-iSt"/>
+                            <constraint firstItem="IV8-xk-pKc" firstAttribute="top" secondItem="PnV-ZM-glo" secondAttribute="bottom" id="SI8-t6-X83"/>
+                            <constraint firstItem="okz-65-xZM" firstAttribute="top" secondItem="PnV-ZM-glo" secondAttribute="bottom" id="SKf-rc-cPw"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="centerY" secondItem="j4M-In-bej" secondAttribute="centerY" id="SQj-ia-CVx"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="55" id="WQf-wi-duz"/>
+                            <constraint firstAttribute="centerX" secondItem="IV8-xk-pKc" secondAttribute="centerX" id="X2c-vL-pyB"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="31" id="YfQ-8b-pAf"/>
+                            <constraint firstItem="mn3-pi-0gK" firstAttribute="trailing" secondItem="BQ7-e0-yVh" secondAttribute="trailingMargin" id="YnZ-50-uX2"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="15" id="ZhM-bP-eMu"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="50" id="bRi-YQ-za0"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="-7" id="beW-gl-Jxt"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="Ex8-Vy-HDy" secondAttribute="bottom" constant="20" id="ccY-64-ikM"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="8" id="cwj-hE-R8a"/>
+                            <constraint firstItem="okz-65-xZM" firstAttribute="top" secondItem="PnV-ZM-glo" secondAttribute="bottom" constant="8" id="dFT-Hw-oKb"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="59" id="du2-4n-QOT"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="leading" secondItem="GHS-wf-he1" secondAttribute="trailing" constant="50" id="eZd-0Y-yCf"/>
+                            <constraint firstItem="5Bc-fV-ttq" firstAttribute="top" secondItem="PnV-ZM-glo" secondAttribute="bottom" constant="60" id="fLl-oz-Ncl"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="cUR-xV-hfl" secondAttribute="bottom" constant="68" id="fpC-wK-AVA"/>
+                            <constraint firstItem="t9Y-UL-SO3" firstAttribute="trailing" secondItem="BQ7-e0-yVh" secondAttribute="trailingMargin" id="fqs-Bk-nbm"/>
+                            <constraint firstItem="GHS-wf-he1" firstAttribute="leading" secondItem="Ex8-Vy-HDy" secondAttribute="trailing" constant="-7" id="pIO-4q-cMd"/>
+                            <constraint firstItem="Kfy-rV-ori" firstAttribute="top" secondItem="1c9-kh-aYW" secondAttribute="bottom" constant="114" id="roe-4T-atk"/>
+                            <constraint firstItem="Ex8-Vy-HDy" firstAttribute="leading" secondItem="j4M-In-bej" secondAttribute="trailing" constant="63" id="tDb-fW-njD"/>
+                            <constraint firstAttribute="centerX" secondItem="5Bc-fV-ttq" secondAttribute="centerX" id="uRY-Mr-tEd"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="1Jb-2s-uHD"/>
+                                <exclude reference="GGJ-Xb-Kif"/>
+                                <exclude reference="dFT-Hw-oKb"/>
+                                <exclude reference="CXB-pR-u2Y"/>
+                                <exclude reference="L12-N5-A7s"/>
+                                <exclude reference="MMO-qh-qcR"/>
+                                <exclude reference="SQj-ia-CVx"/>
+                                <exclude reference="tDb-fW-njD"/>
+                                <exclude reference="Oxl-Uc-2sm"/>
+                                <exclude reference="QlD-7D-6hV"/>
+                                <exclude reference="WQf-wi-duz"/>
+                                <exclude reference="beW-gl-Jxt"/>
+                                <exclude reference="du2-4n-QOT"/>
+                                <exclude reference="pIO-4q-cMd"/>
+                                <exclude reference="6yZ-0V-3CI"/>
+                                <exclude reference="S5O-Du-iSt"/>
+                                <exclude reference="ZhM-bP-eMu"/>
+                                <exclude reference="bRi-YQ-za0"/>
+                                <exclude reference="cwj-hE-R8a"/>
+                                <exclude reference="eZd-0Y-yCf"/>
+                                <exclude reference="fqs-Bk-nbm"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imageEditView" destination="5Bc-fV-ttq" id="8cB-E5-fW9"/>
+                        <outlet property="photoBrightness" destination="1c9-kh-aYW" id="AH0-mw-9zG"/>
+                        <outlet property="photoContrast" destination="cUR-xV-hfl" id="9Zq-5j-GBW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L8E-fs-faP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3567" y="1212"/>
+        </scene>
+        <!--Photo Post View Controller-->
+        <scene sceneID="WoX-7n-qB8">
+            <objects>
+                <viewController id="CFG-ay-7ef" customClass="PhotoPostViewController" customModule="OurInstagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ug9-Pj-FZV"/>
+                        <viewControllerLayoutGuide type="bottom" id="JAk-04-hwm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YDC-tJ-Du0">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCe-OX-7BR">
+                                <rect key="frame" x="16" y="20" width="50" height="30"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="CFG-ay-7ef" eventType="touchUpInside" id="wla-28-hty"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edj-2h-ZOt">
+                                <rect key="frame" x="16" y="550" width="90" height="30"/>
+                                <state key="normal" title="Post Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoPostButton:" destination="CFG-ay-7ef" eventType="touchUpInside" id="jqP-Ui-tdd"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-ao-MzX">
+                                <rect key="frame" x="100" y="100" width="400" height="400"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="QPk-Hb-6Tu"/>
+                                    <constraint firstAttribute="width" constant="400" id="g18-kY-UcY"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="JAk-04-hwm" firstAttribute="top" secondItem="edj-2h-ZOt" secondAttribute="bottom" constant="20" id="3LV-0T-7D7"/>
+                            <constraint firstItem="KCe-OX-7BR" firstAttribute="top" secondItem="ug9-Pj-FZV" secondAttribute="bottom" id="6rV-lN-CrI"/>
+                            <constraint firstAttribute="centerX" secondItem="0Ae-ao-MzX" secondAttribute="centerX" constant="20" id="Faa-yp-c3i"/>
+                            <constraint firstItem="edj-2h-ZOt" firstAttribute="leading" secondItem="YDC-tJ-Du0" secondAttribute="leadingMargin" id="Nl9-Il-AyQ"/>
+                            <constraint firstAttribute="centerX" secondItem="0Ae-ao-MzX" secondAttribute="centerX" id="PrN-FC-AVc"/>
+                            <constraint firstItem="KCe-OX-7BR" firstAttribute="leading" secondItem="YDC-tJ-Du0" secondAttribute="leadingMargin" id="SfI-wI-COM"/>
+                            <constraint firstItem="0Ae-ao-MzX" firstAttribute="top" secondItem="ug9-Pj-FZV" secondAttribute="bottom" constant="60" id="bzi-zL-AzP"/>
+                            <constraint firstItem="0Ae-ao-MzX" firstAttribute="top" secondItem="ug9-Pj-FZV" secondAttribute="bottom" constant="80" id="egc-ky-M3l"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Faa-yp-c3i"/>
+                                <exclude reference="bzi-zL-AzP"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="0Ae-ao-MzX" id="tZJ-bR-MpB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yty-eS-Q1Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4468" y="1212"/>
+        </scene>
+        <!--Gesture View Controller-->
+        <scene sceneID="Oyw-yl-wHB">
+            <objects>
+                <viewController id="oiG-W4-5S5" customClass="GestureViewController" customModule="OurInstagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="K4O-df-G1n"/>
+                        <viewControllerLayoutGuide type="bottom" id="iVd-Hk-iY1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hcd-bB-Kop">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gnw-Cz-CGO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5501" y="2125"/>
         </scene>
         <!--Profile-->
         <scene sceneID="nxr-hU-6ok">
@@ -221,6 +616,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ujC-aN-nHk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="702" y="-1662"/>
+        </scene>
+        <!--Photo-->
+        <scene sceneID="Pxq-7u-sQY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CL9-4w-yFu" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Photo" image="Camera-100" id="0sG-ke-UFS"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NF5-KT-SMr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9I3-fZ-LMQ" kind="relationship" relationship="rootViewController" id="8my-82-62U"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NUt-IY-lvR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="890" y="1212"/>
         </scene>
     </scenes>
     <resources>

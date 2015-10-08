@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import MultipeerConnectivity
-
+import MBProgressHUD
 
 class FeedTableViewController: UITableViewController,MCSessionDelegate  {
 
@@ -56,6 +56,10 @@ class FeedTableViewController: UITableViewController,MCSessionDelegate  {
         self.assistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: self.session)
         // start advertising
         self.assistant.start()
+        
+        
+        
+
         
     }
     
