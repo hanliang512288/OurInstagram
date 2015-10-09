@@ -8,6 +8,7 @@
 
 import UIKit
 import MultipeerConnectivity
+import MBProgressHUD
 
 class InRangeTableViewController: UITableViewController,MCSessionDelegate {
 
@@ -19,6 +20,11 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
     var assistant: MCAdvertiserAssistant!
     var session: MCSession!
     var peerID: MCPeerID!
+    let cellIdentifier:String = "rangeCell"
+    var storeArray:[[NSString:NSString]] = []
+    var sortedArray:[[NSString:NSString]] = []
+    let username = "mobileprogram1234"
+    
     
     
     @IBAction func backButton(sender: UIBarButtonItem) {
@@ -30,11 +36,16 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Photos in Range"
         
+        self.tableView.rowHeight = 100
+        self.tableView.allowsSelection = false
         
-        self.navigationItem.title = "Range Photos"
+        tableView.registerNib(UINib(nibName: "InRangeTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         
-        self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
+        self.peerID = MCPeerID(displayName: username)
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
@@ -44,11 +55,11 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
         self.assistant.start()
         
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func handleRefresh(refreshControl: UIRefreshControl){
+        self.tableView.reloadData()
+        self.refreshControl!.endRefreshing()
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,27 +72,44 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return self.storeArray.count
     }
+    
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! InRangeTableViewCell
+        
+        cell.post = self.sortedArray[indexPath.row]
+        
+        return cell
+    }
+    
+    var Timestamp: String {
+        return "\(NSDate().timeIntervalSince1970)"
+    }
+    
     
     func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
         // when receiving a data
         dispatch_async(dispatch_get_main_queue(), {
-            var msg = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
-            //            var msg = NSString(data: data, encoding: NSUTF8StringEncoding)
-            //            var j = JSON(msg!)
-            //            print(j.count)
-            //            self.updateChat(msg, fromPeer: peerID)
-            var msgArr = msg.componentsSeparatedByString("\n")
-            //            let data = NSJSONSerialization.dataWithJSONObject(msgArr, options: nil, error: nil)
+            let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            loadingNotification.mode = MBProgressHUDMode.Indeterminate
+            loadingNotification.labelText = "Receiving photo from \(peerID.displayName)"
             
+            var msg = NSString(data: data, encoding: NSUTF8StringEncoding)!
+            var photoDic:[NSString:NSString] = ["name":"\(peerID.displayName)","time":self.Timestamp,"data":msg]
+            self.storeArray.append(photoDic)
+            self.sortedArray = reverse(self.storeArray)
+            print("finished")
+            loadingNotification.hide(true, afterDelay:1)
             
+
         })
     }
     
@@ -102,16 +130,9 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
         
     }
 
+    
+    
 
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
 
     /*
     // Override to support conditional editing of the table view.

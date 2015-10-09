@@ -21,6 +21,8 @@
 		20D3ADA81BC6806800176701 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D3ADA31BC6804900176701 /* MBProgressHUD.framework */; };
 		20D3ADA91BC6806800176701 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20D3ADA31BC6804900176701 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		20D3ADB51BC7B5AC00176701 /* InRangeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D3ADB41BC7B5AC00176701 /* InRangeTableViewController.swift */; };
+		20D3ADC31BC7E3FF00176701 /* InRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D3ADC11BC7E3FF00176701 /* InRangeTableViewCell.swift */; };
+		20D3ADC41BC7E3FF00176701 /* InRangeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20D3ADC21BC7E3FF00176701 /* InRangeTableViewCell.xib */; };
 		20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */; };
 		20D43C301BB5948F008198A2 /* FeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */; };
 		20D43C431BB5A7C6008198A2 /* Haneke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D43C3E1BB5A7A8008198A2 /* Haneke.framework */; };
@@ -187,6 +189,8 @@
 		206B960D1BBF98DA00FAF948 /* SwiftDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftDate.swift; sourceTree = "<group>"; };
 		20D3AD961BC6804900176701 /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = "MBProgressHUD-master/MBProgressHUD.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20D3ADB41BC7B5AC00176701 /* InRangeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InRangeTableViewController.swift; sourceTree = "<group>"; };
+		20D3ADC11BC7E3FF00176701 /* InRangeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InRangeTableViewCell.swift; sourceTree = "<group>"; };
+		20D3ADC21BC7E3FF00176701 /* InRangeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InRangeTableViewCell.xib; sourceTree = "<group>"; };
 		20D43C2D1BB5948F008198A2 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		20D43C2E1BB5948F008198A2 /* FeedTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedTableViewCell.xib; sourceTree = "<group>"; };
 		20D43C371BB5A7A8008198A2 /* Haneke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Haneke.xcodeproj; path = "HanekeSwift-master/Haneke.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -336,6 +340,8 @@
 			isa = PBXGroup;
 			children = (
 				20D3ADB41BC7B5AC00176701 /* InRangeTableViewController.swift */,
+				20D3ADC11BC7E3FF00176701 /* InRangeTableViewCell.swift */,
+				20D3ADC21BC7E3FF00176701 /* InRangeTableViewCell.xib */,
 			);
 			name = InRangeTableView;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20D3ADC41BC7E3FF00176701 /* InRangeTableViewCell.xib in Resources */,
 				20D43C301BB5948F008198A2 /* FeedTableViewCell.xib in Resources */,
 				20082C971BB3D2D80031651F /* Main.storyboard in Resources */,
 				20082C991BB3D2D80031651F /* Images.xcassets in Resources */,
@@ -586,6 +593,7 @@
 				20D3ADB51BC7B5AC00176701 /* InRangeTableViewController.swift in Sources */,
 				20082CE01BB410140031651F /* LaunchViewController.swift in Sources */,
 				976432B61BC0ED9E00B3DD97 /* PhotoCropViewController.swift in Sources */,
+				20D3ADC31BC7E3FF00176701 /* InRangeTableViewCell.swift in Sources */,
 				976432BA1BC0FB9200B3DD97 /* PhotoPostViewController.swift in Sources */,
 				976432B11BC0E80200B3DD97 /* PhotoViewController.swift in Sources */,
 				976432B81BC0EF9500B3DD97 /* PhotoEditViewController.swift in Sources */,

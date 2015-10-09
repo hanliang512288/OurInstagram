@@ -72,7 +72,7 @@ class FeedTableViewController: UITableViewController  {
                 self.feedJson = JSON(data!)
                 print(self.feedJson.dynamicType)
                 self.feedError = error
-//                print(self.feedJson["data"][0])
+                print(self.feedJson["data"][0])
             
                 self.tableView.reloadData()
                 self.refreshControl!.endRefreshing()

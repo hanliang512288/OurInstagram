@@ -587,7 +587,8 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ddn-dg-LEA">
-                        <barButtonItem key="rightBarButtonItem" title="In Range" id="rxV-hY-Z6j">
+                        <barButtonItem key="rightBarButtonItem" title="Range" id="rxV-hY-Z6j">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="Ybc-Rn-4TT" kind="popoverPresentation" popoverAnchorBarButtonItem="rxV-hY-Z6j" id="5db-Wr-27L">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -627,15 +628,19 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="ACA-Zw-KdY">
                         <barButtonItem key="leftBarButtonItem" title="Back" id="c7c-2E-qeI">
+                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="bm8-uu-qID" id="AQZ-43-H10"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="cak-F6-gGY">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wBC-hK-D3d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3141" y="-2309"/>
+            <point key="canvasLocation" x="3186" y="-2421"/>
         </scene>
         <!--Search-->
         <scene sceneID="rff-EV-dOv">

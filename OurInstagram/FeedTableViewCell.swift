@@ -240,6 +240,9 @@ class FeedTableViewCell: UITableViewCell {
         
         //Assign MediaID
         self.mediaID = self.post!["id"].stringValue
+        
+        //Display location
+        self.location.text = self.post?["location"]["name"].stringValue
     }
     
 }

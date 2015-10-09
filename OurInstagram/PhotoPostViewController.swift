@@ -14,6 +14,7 @@ import AssetsLibrary
 import MultipeerConnectivity
 import Alamofire
 import SwiftyJSON
+import MBProgressHUD
 
 class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDelegate,MCBrowserViewControllerDelegate, MCSessionDelegate  {
     
@@ -105,32 +106,26 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
     
     func swipePhoto() {
         
-        let userReqUrl = "https://api.instagram.com/v1/users/self/?access_token=\(token)"
-        Alamofire.request(.GET,userReqUrl).responseJSON{
-            (_,_,data,reqError)->Void in
-                var jsonObj = JSON(data!)
-                let jsonData = jsonObj["data"]
-                let name = jsonData["username"].stringValue
-                var postTime = self.Timestamp
-//                let identInfo = ["name":"\(name)","time":"\(postTime)"]
-                let identInfo = name + "\n" + "\(postTime)"
-            
-//                print(inden)
-                let msg = "\(identInfo)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-                var error: NSError?
-            
-                //This is send
-                self.session.sendData(msg, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Unreliable, error: &error)
-            
-                if error != nil {
-                    println("Error sending data: \(error!.localizedDescription)")
-                }
+        let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        loadingNotification.mode = MBProgressHUDMode.Indeterminate
+        loadingNotification.labelText = "Sending"
         
-            }
+        var imageData = UIImagePNGRepresentation(self.newImage)
+        let base64String = imageData.base64EncodedStringWithOptions(.allZeros)
         
+        let msg = base64String.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
         
+        var error: NSError?
         
+        //This is send
+        self.session.sendData(msg, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Unreliable, error: &error)
         
+        if error != nil {
+            println("Error sending data: \(error!.localizedDescription)")
+        }
+        loadingNotification.hide(true, afterDelay:1)
+        
+
     
         
 
@@ -140,28 +135,27 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
 //        self.messageField.text = ""
         
         
-        let image = self.newImage
-        let filename = "photo.igo"
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, false)[0] as! NSString
-        let destinationPath = documentsPath.stringByAppendingString("/" + filename)
-        let f = destinationPath.stringByExpandingTildeInPath
-        UIImagePNGRepresentation(image).writeToFile(f, atomically:true)
-        let fileURL = NSURL(fileURLWithPath: f)! as NSURL
-        
-        self.documentController = UIDocumentInteractionController(URL: fileURL)
-        self.documentController.delegate = self
-        documentController.UTI = "com.instagram.exclusivegram"
-        documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
+//        let image = self.newImage
+//        let filename = "photo.igo"
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, false)[0] as! NSString
+//        let destinationPath = documentsPath.stringByAppendingString("/" + filename)
+//        let f = destinationPath.stringByExpandingTildeInPath
+//        UIImagePNGRepresentation(image).writeToFile(f, atomically:true)
+//        let fileURL = NSURL(fileURLWithPath: f)! as NSURL
+//        
+//        self.documentController = UIDocumentInteractionController(URL: fileURL)
+//        self.documentController.delegate = self
+//        documentController.UTI = "com.instagram.exclusivegram"
+//        documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
         print("Swipe photo")
+        
         
         
 
     }
     
     
-    var Timestamp: String {
-        return "\(NSDate().timeIntervalSince1970 * 1000)"
-    }
+
     
     // browser delegate's methods
     func browserViewControllerDidFinish(browserViewController: MCBrowserViewController!) {
