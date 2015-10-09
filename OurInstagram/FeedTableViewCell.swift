@@ -26,6 +26,8 @@ class FeedTableViewCell: UITableViewCell {
     var likeFlag = 0
     var myComment = ""
     
+    
+    
     @IBOutlet weak var name: UILabel!
     
     @IBOutlet weak var location: UILabel!
@@ -57,13 +59,11 @@ class FeedTableViewCell: UITableViewCell {
         
         Alamofire.request(.POST,commentURL).responseJSON{
             (_,_,data,error)->Void in
-            
-            var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+            var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
             hud.mode = MBProgressHUDMode.Text
             hud.labelText = "Comment response is"
             hud.detailsLabelText = "\(data)"
             hud.hide(true, afterDelay: 1)
-            
         }
     }
     
@@ -83,7 +83,13 @@ class FeedTableViewCell: UITableViewCell {
             Alamofire.request(.POST,likeURL).responseJSON{
                 (_,_,data,error)->Void in
                 
-                var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+//                var cell: UITableViewCell = self.superview as! UITableViewCell
+//                var table: UITableView = cell.superview as! UITableView
+//                let IndexPath = table.indexPathForCell(cell)
+                
+       
+                var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
+                print(hud.dynamicType)
                 hud.mode = MBProgressHUDMode.Text
                 hud.labelText = "Like response is"
                 hud.detailsLabelText = "\(data)"
@@ -103,7 +109,7 @@ class FeedTableViewCell: UITableViewCell {
             Alamofire.request(.DELETE,dislikeURL).responseJSON{
                 (_,_,data,error)->Void in
                 
-                var hud = MBProgressHUD.showHUDAddedTo(self.superview, animated: true)
+                var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
                 hud.mode = MBProgressHUDMode.Text
                 hud.labelText = "Dislike response is"
                 hud.detailsLabelText = "\(data)"
@@ -133,6 +139,7 @@ class FeedTableViewCell: UITableViewCell {
         self.commentsString = ""
         self.portrait.image = nil
         self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
+        
 //        self.comments.delegate = self
 
     }

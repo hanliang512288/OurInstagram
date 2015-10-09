@@ -9,10 +9,9 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-import MultipeerConnectivity
-import MBProgressHUD
 
-class FeedTableViewController: UITableViewController,MCSessionDelegate  {
+
+class FeedTableViewController: UITableViewController  {
 
       
     
@@ -21,11 +20,10 @@ class FeedTableViewController: UITableViewController,MCSessionDelegate  {
     var feedError:AnyObject? = nil
     let cellIdentifier:String = "feedCell"
     
-    //Variables for MPC
-    let serviceType = "Local-Chat"
-    var assistant: MCAdvertiserAssistant!
-    var session: MCSession!
-    var peerID: MCPeerID!
+
+    
+    //Variable stores peers nearby
+
     
     override func viewDidLoad() {
         self.tableView.rowHeight = 589
@@ -38,26 +36,13 @@ class FeedTableViewController: UITableViewController,MCSessionDelegate  {
         
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
 
-        
+        self.navigationItem.title = "OurInstagram"
 //        var rightDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Date",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByDate:")
 //         var leftDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Location",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByLocation:")
 //        
 //        self.navigationItem.setRightBarButtonItem(rightDateBarButtonItem, animated: true)
 //    
 //        self.navigationItem.setLeftBarButtonItem(leftDateBarButtonItem, animated: true)
-        
-        self.navigationItem.title = "OurInstagram"
-        
-        self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
-        self.session = MCSession(peer: peerID)
-        self.session.delegate = self
-        
-        // the advertiser
-        self.assistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: self.session)
-        // start advertising
-        self.assistant.start()
-        
-        
         
 
         
@@ -77,17 +62,17 @@ class FeedTableViewController: UITableViewController,MCSessionDelegate  {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
-   
     }
 
     func loadFeed(){
         let feedUrl = "https://api.instagram.com/v1/users/self/feed?access_token=\(token)"
         Alamofire.request(.GET,feedUrl).responseJSON{
             (_,_,data,error) in
+//                print(data.dynamicType)
                 self.feedJson = JSON(data!)
+                print(self.feedJson.dynamicType)
                 self.feedError = error
-                print(self.feedJson["data"][0])
+//                print(self.feedJson["data"][0])
             
                 self.tableView.reloadData()
                 self.refreshControl!.endRefreshing()
@@ -129,31 +114,6 @@ class FeedTableViewController: UITableViewController,MCSessionDelegate  {
         return cell
     }
     
-    func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
-        // when receiving a data
-        dispatch_async(dispatch_get_main_queue(), {
-            var msg = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
-            print(msg)
-//            self.updateChat(msg, fromPeer: peerID)
-        })
-    }
-    
-    func session(session: MCSession!, didStartReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, withProgress progress: NSProgress!) {
-        
-    }
-    
-    func session(session: MCSession!, didFinishReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, atURL localURL: NSURL!, withError error: NSError!) {
-        
-    }
-    
-    
-    func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!) {
-        
-    }
-    
-    func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        
-    }
 
     /*
     // Override to support conditional editing of the table view.

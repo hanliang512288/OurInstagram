@@ -11,13 +11,27 @@
 import Foundation
 import UIKit
 import AssetsLibrary
+import MultipeerConnectivity
+import Alamofire
+import SwiftyJSON
 
-class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDelegate {
+class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDelegate,MCBrowserViewControllerDelegate, MCSessionDelegate  {
+    
+    let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     
     var newImage = UIImage(named: "photo.igo")
     
     //Create controller to handle document interaction
     var documentController:UIDocumentInteractionController!
+    
+    
+    
+    let serviceType = "Local-Chat"
+    
+    var browser: MCBrowserViewController!
+    var assistant: MCAdvertiserAssistant!
+    var session: MCSession!
+    var peerID: MCPeerID!
 
     //Create image view to dispaly image
     @IBOutlet weak var imageView: UIImageView!
@@ -44,6 +58,13 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
     }
     
+    
+    
+    @IBAction func findFriend(sender: UIButton) {
+        self.presentViewController(self.browser, animated: true, completion: nil)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imageView.image = self.newImage
@@ -62,6 +83,20 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         view.addGestureRecognizer(rightSwipe)
         view.addGestureRecognizer(upSwipe)
         view.addGestureRecognizer(downSwipe)
+        
+        
+        self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
+        self.session = MCSession(peer: peerID)
+        self.session.delegate = self
+        
+        // the browser
+        self.browser = MCBrowserViewController(serviceType: serviceType, session: self.session)
+        self.browser.delegate = self
+        
+        // the advertiser
+        self.assistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: self.session)
+        // start advertising
+        self.assistant.start()
     }
     
     func handleSwipe(sender:UISwipeGestureRecognizer) {
@@ -69,6 +104,42 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
     }
     
     func swipePhoto() {
+        
+        let userReqUrl = "https://api.instagram.com/v1/users/self/?access_token=\(token)"
+        Alamofire.request(.GET,userReqUrl).responseJSON{
+            (_,_,data,reqError)->Void in
+                var jsonObj = JSON(data!)
+                let jsonData = jsonObj["data"]
+                let name = jsonData["username"].stringValue
+                var postTime = self.Timestamp
+//                let identInfo = ["name":"\(name)","time":"\(postTime)"]
+                let identInfo = name + "\n" + "\(postTime)"
+            
+//                print(inden)
+                let msg = "\(identInfo)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+                var error: NSError?
+            
+                //This is send
+                self.session.sendData(msg, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Unreliable, error: &error)
+            
+                if error != nil {
+                    println("Error sending data: \(error!.localizedDescription)")
+                }
+        
+            }
+        
+        
+        
+        
+    
+        
+
+        
+//        self.updateChat(self.messageField.text, fromPeer: self.peerID)
+//        
+//        self.messageField.text = ""
+        
+        
         let image = self.newImage
         let filename = "photo.igo"
         let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, false)[0] as! NSString
@@ -82,7 +153,52 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         documentController.UTI = "com.instagram.exclusivegram"
         documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
         print("Swipe photo")
+        
+        
 
+    }
+    
+    
+    var Timestamp: String {
+        return "\(NSDate().timeIntervalSince1970 * 1000)"
+    }
+    
+    // browser delegate's methods
+    func browserViewControllerDidFinish(browserViewController: MCBrowserViewController!) {
+        // "Done" was tapped
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func browserViewControllerWasCancelled(browserViewController: MCBrowserViewController!) {
+        // "Cancel" was tapped
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // session delegate's methods
+    func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
+        // when receiving a data
+        dispatch_async(dispatch_get_main_queue(), {
+            var msg = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+            
+//            self.updateChat(msg, fromPeer: peerID)
+        })
+    }
+    
+    func session(session: MCSession!, didStartReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, withProgress progress: NSProgress!) {
+        
+    }
+    
+    func session(session: MCSession!, didFinishReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, atURL localURL: NSURL!, withError error: NSError!) {
+        
+    }
+    
+    
+    func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!) {
+        
+    }
+    
+    func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

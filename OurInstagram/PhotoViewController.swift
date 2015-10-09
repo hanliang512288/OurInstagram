@@ -54,6 +54,7 @@ class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
         }
     }
     
+    
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage

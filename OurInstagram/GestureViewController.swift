@@ -8,8 +8,17 @@
 
 import Foundation
 import UIKit
+import MultipeerConnectivity
 
-class GestureViewController:UIViewController {
+class GestureViewController:UIViewController  {
+    
+    let serviceType = "Local-Chat"
+    
+    var browser: MCBrowserViewController!
+    var assistant: MCAdvertiserAssistant!
+    var session: MCSession!
+    var peerID: MCPeerID!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,15 +32,22 @@ class GestureViewController:UIViewController {
         upSwipe.direction = .Up
         downSwipe.direction = .Down
         
-        view.addGestureRecognizer(leftSwipe)
-        view.addGestureRecognizer(rightSwipe)
-        view.addGestureRecognizer(upSwipe)
-        view.addGestureRecognizer(downSwipe)
+        self.view.addGestureRecognizer(leftSwipe)
+        self.view.addGestureRecognizer(rightSwipe)
+        self.view.addGestureRecognizer(upSwipe)
+        self.view.addGestureRecognizer(downSwipe)
+        
+        
+        
+
     }
     
     func handleSwipe(sender:UISwipeGestureRecognizer) {
             print("Swipe Photos.")
     }
+    
+ 
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
