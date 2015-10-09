@@ -17,10 +17,19 @@ class FeedTableViewController: UITableViewController  {
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     var feedJson:JSON = nil
+    
+    var rawJson:JSON = nil
     var feedError:AnyObject? = nil
     let cellIdentifier:String = "feedCell"
+    var sortFlag = 0
+    
     
 
+
+    @IBAction func segSort(sender: UISegmentedControl) {
+        var selected = sender.selectedSegmentIndex
+        self.sortFlag = selected
+    }
     
     //Variable stores peers nearby
 
@@ -37,31 +46,27 @@ class FeedTableViewController: UITableViewController  {
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
 
         self.navigationItem.title = "OurInstagram"
-//        var rightDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Date",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByDate:")
-//         var leftDateBarButtonItem:UIBarButtonItem = UIBarButtonItem(title:"Location",style:UIBarButtonItemStyle.Plain,target:self,action:"sortByLocation:")
-//        
-//        self.navigationItem.setRightBarButtonItem(rightDateBarButtonItem, animated: true)
-//    
-//        self.navigationItem.setLeftBarButtonItem(leftDateBarButtonItem, animated: true)
-        
 
         
     }
     
     
-//    func sortByDate(sender:UIButton){
-//    }
-//    
-//    func sortByLocation(sender:UIButton){
-//    }
-//    
+
     
     func handleRefresh(refreshControl: UIRefreshControl){
         loadFeed()
+        print(self.sortFlag)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func sortByLocation(rawJson:SwiftyJSON.JSON)->SwiftyJSON.JSON{
+        var sorted:Array<JSON> = []
+        sorted = rawJson.arrayValue
+        sorted.sort({$0["location"]["name"] < $1["location"]["name"]})
+        return JSON(sorted)
     }
 
     func loadFeed(){
@@ -69,26 +74,26 @@ class FeedTableViewController: UITableViewController  {
         Alamofire.request(.GET,feedUrl).responseJSON{
             (_,_,data,error) in
 //                print(data.dynamicType)
-                self.feedJson = JSON(data!)
-                print(self.feedJson.dynamicType)
+                self.rawJson = JSON(data!)
+                print(self.rawJson.dynamicType)
                 self.feedError = error
-                print(self.feedJson["data"][0])
+//                print(self.feedJson["data"][0])
+            if (self.sortFlag == 0){
+                self.feedJson = self.rawJson["data"]
+                print(self.feedJson.dynamicType)
+            }else{
+                self.feedJson = self.sortByLocation(self.rawJson["data"])
+//                print(self.feedJson)
+            }
+            
+            
             
                 self.tableView.reloadData()
                 self.refreshControl!.endRefreshing()
         }
     }
     
-//    func loadFeed(callBack:(JSON,NSError)->())->(){
-//        
-//       let feedUrl = "https://api.instagram.com/v1/users/self/feed?access_token=\(token)"
-//            
-//            Alamofire.request(.GET,feedUrl).responseJSON{
-//                (_,_,data,error) in
-//                self.feedJson = JSON(data!)
-//                callBack(self.feedJson,error!)
-//            }
-//    }
+
     
     
     // MARK: - Table view data source
@@ -100,7 +105,7 @@ class FeedTableViewController: UITableViewController  {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       
-        return self.feedJson["data"].count
+        return self.feedJson.count
     }
 
     
@@ -108,7 +113,7 @@ class FeedTableViewController: UITableViewController  {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FeedTableViewCell
         
-        cell.post = self.feedJson["data"][indexPath.row]
+        cell.post = self.feedJson[indexPath.row]
         
 
         return cell
