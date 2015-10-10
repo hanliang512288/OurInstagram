@@ -11,7 +11,7 @@ import Alamofire
 import SwiftyJSON
 
 
-class FeedTableViewController: UITableViewController  {
+class FeedTableViewController: UITableViewController,UITextFieldDelegate  {
 
       
     
@@ -23,7 +23,7 @@ class FeedTableViewController: UITableViewController  {
     let cellIdentifier:String = "feedCell"
     var sortFlag = 0
     
-    
+
 
 
     @IBAction func segSort(sender: UISegmentedControl) {
@@ -58,15 +58,29 @@ class FeedTableViewController: UITableViewController  {
         print(self.sortFlag)
     }
     
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     func sortByLocation(rawJson:SwiftyJSON.JSON)->SwiftyJSON.JSON{
+        
         var sorted:Array<JSON> = []
-        sorted = rawJson.arrayValue
-        sorted.sort({$0["location"]["name"] < $1["location"]["name"]})
-        return JSON(sorted)
+        var empty:Array<JSON> = []
+        
+        for ele in rawJson.arrayValue{
+  
+            if (ele["location"]["name"].string?.isEmpty != nil){
+                sorted.append(ele)
+            }else{
+                print("hanliang")
+                empty.append(ele)
+            }
+            
+        }
+//        print(JSON(sorted))
+        sorted.sort({$0["location"]["name"].string < $1["location"]["name"].string})
+        return JSON(sorted+empty)
     }
 
     func loadFeed(){
@@ -112,12 +126,21 @@ class FeedTableViewController: UITableViewController  {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! FeedTableViewCell
-        
+        cell.comment.delegate = self
         cell.post = self.feedJson[indexPath.row]
         
 
         return cell
     }
+    
+    func textFieldShouldReturn(comment: UITextField) -> Bool {
+        
+        print("hanliang")
+        comment.resignFirstResponder()
+        return true
+    }
+
+    
     
 
     /*

@@ -46,6 +46,9 @@ class FeedTableViewCell: UITableViewCell {
 
     @IBAction func send(sender: UIButton) {
         
+        
+        if (String(self.comment.text) != ""){
+        
         self.myComment = self.comment.text
         self.comment.text = ""
         print(self.myComment)
@@ -65,6 +68,9 @@ class FeedTableViewCell: UITableViewCell {
             hud.detailsLabelText = "\(data)"
             hud.hide(true, afterDelay: 1)
         }
+        
+        }
+        
     }
     
     @IBOutlet weak var portrait: UIImageView!
@@ -124,7 +130,7 @@ class FeedTableViewCell: UITableViewCell {
         }
     }
     
-
+    
     var post: SwiftyJSON.JSON? {
         didSet {
             // after 'post' is assigned by a value
@@ -139,6 +145,7 @@ class FeedTableViewCell: UITableViewCell {
         self.commentsString = ""
         self.portrait.image = nil
         self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
+//        self.comment.delegate = self
         
 //        self.comments.delegate = self
 
