@@ -1,8 +1,8 @@
 //
-//  ProfileViewController.swift
+//  ProfileViewController2.swift
 //  OurInstagram
 //
-//  Created by Zita Liu on 11/10/2015.
+//  Created by LarryHan on 11/10/2015.
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
@@ -10,38 +10,41 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-
-    @IBOutlet weak var profilePic: UIImageView!
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var numPost: UILabel!
-    @IBOutlet weak var textPost: UILabel!
-    @IBOutlet weak var numFlwer: UILabel!
-    @IBOutlet weak var textFlwer: UILabel!
-    @IBOutlet weak var numFlwing: UILabel!
-    @IBOutlet weak var textFlwing: UILabel!
+class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollectionViewDataSource, UICollectionViewDelegate{
     
-  
-    @IBOutlet weak var profileCollectionView: UICollectionView!
+    var refreshControl:UIRefreshControl!
+    
+    
+    @IBOutlet var scrollView: UIScrollView!
 
+    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var numPost: UILabel!
+    @IBOutlet weak var numFlwer: UILabel!
+    @IBOutlet weak var numFlwing: UILabel!
+    @IBOutlet weak var name: UILabel!
+    
+    @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var profileCollectionView: UICollectionView!
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     var infoJson:JSON = nil
     var photoJson:JSON = nil
     var jasonError:AnyObject? = nil
     var cellIdentifier = "Cell"
-    var refreshControl:UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.profileCollectionView.addSubview(refreshControl)
+        self.scrollView.scrollEnabled = true
+        self.scrollView.alwaysBounceVertical = true
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.scrollView.addSubview(refreshControl)
+        
+        
         
         self.navigationItem.title = "OurInstagram"
         var flow:UICollectionViewFlowLayout = self.profileCollectionView.collectionViewLayout as!
-            UICollectionViewFlowLayout
+        UICollectionViewFlowLayout
         flow.itemSize = CGSizeMake(80, 80)
         
         var nipName=UINib(nibName: "ProfileCollectionViewCell", bundle:nil)
@@ -50,24 +53,32 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         
         loadProfile()
         loadCollectionView()
-//        self.profileCollectionView.reloadData()
+        
+        
         // Do any additional setup after loading the view.
     }
     
-    func refresh(sender: AnyObject){
-        print("123")
-    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func refresh(sender:AnyObject)
+    {
+        loadProfile()
+        loadCollectionView()
+        self.refreshControl.endRefreshing()
+    }
+    
+    
     func loadProfile() {
         let infoUrl = "https://api.instagram.com/v1/users/self/?access_token=\(token)"
         Alamofire.request(.GET,infoUrl).responseJSON{
             (_,_,data,error) in
             self.infoJson = JSON(data!)
+            print(self.infoJson)
             self.jasonError = error
             self.infoJson = self.infoJson["data"]
             
@@ -88,7 +99,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             self.numFlwer.text = self.infoJson["counts"]["followed_by"].stringValue
             
             self.numFlwing.text = self.infoJson["counts"]["follows"].stringValue
-//
+            //
+            self.userName.text = self.infoJson["username"].stringValue
         }
     }
     
@@ -101,11 +113,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             
             self.profileCollectionView.reloadData()
             self.jasonError = error
-//            print(self.photoJson)
+            //            print(self.photoJson)
         }
     }
     
-     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         //#warning Incomplete method implementation -- Return the number of sections
         return 1
     }
@@ -128,6 +140,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return cell
         
     }
+
+    
     
     
 

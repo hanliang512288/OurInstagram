@@ -19,6 +19,7 @@
 		20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20082CE41BB423B90031651F /* FeedTableViewController.swift */; };
 		2033368B1BCA15D0002EB100 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203336891BCA15D0002EB100 /* ProfileCollectionViewCell.swift */; };
 		2033368C1BCA15D0002EB100 /* ProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2033368A1BCA15D0002EB100 /* ProfileCollectionViewCell.xib */; };
+		203336921BCA2C3B002EB100 /* ProfileViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203336911BCA2C3B002EB100 /* ProfileViewController2.swift */; };
 		206B960E1BBF98DA00FAF948 /* SwiftDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206B960D1BBF98DA00FAF948 /* SwiftDate.swift */; };
 		20D3ADA81BC6806800176701 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D3ADA31BC6804900176701 /* MBProgressHUD.framework */; };
 		20D3ADA91BC6806800176701 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20D3ADA31BC6804900176701 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -197,6 +198,7 @@
 		20082CE41BB423B90031651F /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedTableViewController.swift; path = ../FeedTableViewController.swift; sourceTree = "<group>"; };
 		203336891BCA15D0002EB100 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		2033368A1BCA15D0002EB100 /* ProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCollectionViewCell.xib; sourceTree = "<group>"; };
+		203336911BCA2C3B002EB100 /* ProfileViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController2.swift; sourceTree = "<group>"; };
 		206B960D1BBF98DA00FAF948 /* SwiftDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftDate.swift; sourceTree = "<group>"; };
 		20D3AD961BC6804900176701 /* MBProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MBProgressHUD.xcodeproj; path = "MBProgressHUD-master/MBProgressHUD.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		20D3ADB41BC7B5AC00176701 /* InRangeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InRangeTableViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				F1A6EC6E1BC982ED00A984D3 /* ProfileViewController.swift */,
 				203336891BCA15D0002EB100 /* ProfileCollectionViewCell.swift */,
 				2033368A1BCA15D0002EB100 /* ProfileCollectionViewCell.xib */,
+				203336911BCA2C3B002EB100 /* ProfileViewController2.swift */,
 			);
 			name = ProfileView;
 			sourceTree = "<group>";
@@ -641,6 +644,7 @@
 			files = (
 				976F32261BC47CFA004E4CBB /* GestureViewController.swift in Sources */,
 				20082C901BB3D2D80031651F /* AppDelegate.swift in Sources */,
+				203336921BCA2C3B002EB100 /* ProfileViewController2.swift in Sources */,
 				206B960E1BBF98DA00FAF948 /* SwiftDate.swift in Sources */,
 				20D43C2F1BB5948F008198A2 /* FeedTableViewCell.swift in Sources */,
 				20082CE51BB423B90031651F /* FeedTableViewController.swift in Sources */,
