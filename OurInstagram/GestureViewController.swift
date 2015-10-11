@@ -37,9 +37,6 @@ class GestureViewController:UIViewController  {
         self.view.addGestureRecognizer(upSwipe)
         self.view.addGestureRecognizer(downSwipe)
         
-        
-        
-
     }
     
     func handleSwipe(sender:UISwipeGestureRecognizer) {
