@@ -14,16 +14,20 @@ class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollection
     
     var refreshControl:UIRefreshControl!
     
-    
+    //Create a scroll view
     @IBOutlet var scrollView: UIScrollView!
 
+    //Create the text components on the profile screen
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var numPost: UILabel!
     @IBOutlet weak var numFlwer: UILabel!
     @IBOutlet weak var numFlwing: UILabel!
     @IBOutlet weak var name: UILabel!
     
+    //Create an image view for profile picture
     @IBOutlet weak var profilePic: UIImageView!
+    
+    //Create a collection view to display all photos uploaded
     @IBOutlet weak var profileCollectionView: UICollectionView!
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
@@ -34,15 +38,18 @@ class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Initiate the setting of the scroll view and pull to refresh
         self.scrollView.scrollEnabled = true
         self.scrollView.alwaysBounceVertical = true
         self.refreshControl = UIRefreshControl()
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.scrollView.addSubview(refreshControl)
         
-        
-        
+        //Display the title on the navigation bar
         self.navigationItem.title = "OurInstagram"
+        
+        //Initiate the setting and format of the collection view cells
         var flow:UICollectionViewFlowLayout = self.profileCollectionView.collectionViewLayout as!
         UICollectionViewFlowLayout
         flow.itemSize = CGSizeMake(80, 80)
@@ -77,30 +84,40 @@ class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollection
         let infoUrl = "https://api.instagram.com/v1/users/self/?access_token=\(token)"
         Alamofire.request(.GET,infoUrl).responseJSON{
             (_,_,data,error) in
-            self.infoJson = JSON(data!)
-            print(self.infoJson)
-            self.jasonError = error
-            self.infoJson = self.infoJson["data"]
             
-            //Display user's full name
-            self.name.text = self.infoJson["full_name"].stringValue
-            
-            //Display user's profile picture
-            let picUrl = self.infoJson["profile_picture"].stringValue
-            var url = NSURL(string: picUrl)
-            self.profilePic.hnk_setImageFromURL(url!)
-            self.profilePic.layer.cornerRadius = self.profilePic.frame.size.height/2
-            self.profilePic.layer.masksToBounds = true
-            self.profilePic.layer.borderWidth = 0
-            
-            //Display stats on posts, followers, following
-            self.numPost.text = self.infoJson["counts"]["media"].stringValue
-            
-            self.numFlwer.text = self.infoJson["counts"]["followed_by"].stringValue
-            
-            self.numFlwing.text = self.infoJson["counts"]["follows"].stringValue
-            //
-            self.userName.text = self.infoJson["username"].stringValue
+            if data != nil{
+                self.infoJson = JSON(data!)
+                print(self.infoJson)
+                self.jasonError = error
+                self.infoJson = self.infoJson["data"]
+                
+                //Display user's full name
+                self.name.text = self.infoJson["full_name"].stringValue
+                
+                //Display user's profile picture
+                let picUrl = self.infoJson["profile_picture"].stringValue
+                var url = NSURL(string: picUrl)
+                self.profilePic.hnk_setImageFromURL(url!)
+                self.profilePic.layer.cornerRadius = self.profilePic.frame.size.height/2
+                self.profilePic.layer.masksToBounds = true
+                self.profilePic.layer.borderWidth = 0
+                
+                //Display stats on posts, followers, following
+                self.numPost.text = self.infoJson["counts"]["media"].stringValue
+                
+                self.numFlwer.text = self.infoJson["counts"]["followed_by"].stringValue
+                
+                self.numFlwing.text = self.infoJson["counts"]["follows"].stringValue
+                //
+                self.userName.text = self.infoJson["username"].stringValue
+            }
+            else{
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
     
@@ -108,12 +125,21 @@ class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollection
         let infoUrl = "https://api.instagram.com/v1/users/self/media/recent/?access_token=\(token)"
         Alamofire.request(.GET,infoUrl).responseJSON{
             (_,_,data,error) in
-            self.photoJson = JSON(data!)
-            self.photoJson = self.photoJson["data"]
             
-            self.profileCollectionView.reloadData()
-            self.jasonError = error
-            //            print(self.photoJson)
+            if data != nil {
+                self.photoJson = JSON(data!)
+                self.photoJson = self.photoJson["data"]
+                
+                self.profileCollectionView.reloadData()
+                self.jasonError = error
+            }
+            else{
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
     
@@ -138,21 +164,5 @@ class ProfileViewController2: UIViewController,UIScrollViewDelegate,UICollection
         cell.imageEachCell.hnk_setImageFromURL(url!)
         
         return cell
-        
     }
-
-    
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

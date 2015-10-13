@@ -1,12 +1,13 @@
-//
 //  PhotoCropViewController.swift
 //  OurInstagram
 //
 //  Created by bragi on 4/10/2015.
 //  Copyright (c) 2015 LarryHan. All rights reserved.
-//
-//  Provide user with functions to crop photos.
-//  Provide buttons to go to previous and next views.
+
+/*  
+    This class provides user with functions to crop photos.
+    This class is also responsible for jumping to the next view and previous view.
+*/
 
 import Foundation
 import UIKit
@@ -30,6 +31,8 @@ UIScrollViewDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    //Create a scroll view and initialize its settings
+    //Create a image view inside to display image
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imageView.image = self.newImage
@@ -56,6 +59,7 @@ UIScrollViewDelegate {
         centerScrollViewContent()
     }
     
+    //Display image in the center in the scroll view
     func centerScrollViewContent() {
         let boundsSize = self.scrollView.bounds.size
         var contentsFrame = self.imageView.frame
@@ -76,17 +80,18 @@ UIScrollViewDelegate {
         self.imageView.frame = contentsFrame
     }
     
+    //Adjust view to center
     func scrollDidZoom(scollView: UIScrollView) {
         centerScrollViewContent()
     }
     
+    //Adjust the view when the user is manipulating with gestures
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
     
-    //Pass the current image to desitnation view
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+    //Pass the current image to desitnation view when the veiw is jumping to the next view
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {        
         UIGraphicsBeginImageContextWithOptions(self.scrollView.bounds.size, true, UIScreen.mainScreen().scale)
         let offset = self.scrollView.contentOffset
         CGContextTranslateCTM(UIGraphicsGetCurrentContext(), -offset.x, -offset.y)

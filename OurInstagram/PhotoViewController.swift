@@ -1,10 +1,14 @@
-//
 //  PhotoViewController.swift
 //  OurInstagram
 //
 //  Created by bragi on 4/10/2015.
 //  Copyright (c) 2015 LarryHan. All rights reserved.
-//
+
+/*
+    This class is responsible for displaying the photo selected from the local library or captured by the camera.
+    This class controls jumping to the next view with passing displayed image to the next view as well.
+    Errors that no camera on the device and no photo displayed on the view are issued.
+*/
 
 import Foundation
 import UIKit
@@ -12,12 +16,20 @@ import UIKit
 class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
     UINavigationControllerDelegate {
     
+    //Create an image view to display image
     @IBOutlet weak var imageView: UIImageView!
     
+    /*
+      Create a picker to select photo from the library or camera.
+      The UIImagePickerController manages user interactions and delivers the results of those interactions to a delegate
+      object.
+    */
     let imagePicker = UIImagePickerController()
 
+    //Create an image view to implement grid feature
     var cameraOverlay: UIImageView!
 
+    //Select photo from the local library
     @IBAction func photoLibraryButton(sender: UIBarButtonItem) {
         self.imagePicker.delegate = self
         self.imagePicker.allowsEditing = true
@@ -27,6 +39,7 @@ class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
         self.imagePicker.popoverPresentationController?.barButtonItem = sender
     }
     
+    //Create photo by calling camera to capture
     @IBAction func photoCameraButton(sender: UIBarButtonItem) {
         if UIImagePickerController.availableCaptureModesForCameraDevice(.Rear) != nil {
             self.imagePicker.delegate = self
@@ -54,8 +67,7 @@ class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
         }
     }
     
-    
-
+    //Controller to control the image picker and load photo
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         var chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.imageView.contentMode = .ScaleAspectFit
@@ -108,6 +120,7 @@ class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    //Pass the selected photo to the next view controller(Crop manipuation)
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         if (identifier == "PhotoEditView") {
             if (imageView.image == nil) {
@@ -133,8 +146,10 @@ class PhotoViewController: UIViewController,UIImagePickerControllerDelegate,
         }
     }
     
+    //Load the view when this view displays
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "OurInstagram"
     }
     
     override func didReceiveMemoryWarning() {

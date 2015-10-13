@@ -6,20 +6,24 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+
+/*
+    This class is aimed to display the received photo from wifi or bluetooth and the corresponding
+    peer name and time. And it also advertise to be found by other peers.
+*/
+
 import UIKit
 import MultipeerConnectivity
 import MBProgressHUD
 
 class InRangeTableViewController: UITableViewController,MCSessionDelegate {
 
-    
-    
-    
     //Variables for MPC
     let serviceType = "Local-Chat"
     var assistant: MCAdvertiserAssistant!
     var session: MCSession!
     var peerID: MCPeerID!
+    
     let cellIdentifier:String = "rangeCell"
     var storeArray:[[NSString:NSString]] = []
     var sortedArray:[[NSString:NSString]] = []
@@ -32,12 +36,11 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
     }
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Photos in Range"
         
+        //Set the properties of table cell.
         self.tableView.rowHeight = 100
         self.tableView.allowsSelection = false
         
@@ -57,6 +60,7 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
 
     }
     
+    //fucntion handles pull to refresh action.
     func handleRefresh(refreshControl: UIRefreshControl){
         self.tableView.reloadData()
         self.refreshControl!.endRefreshing()
@@ -64,20 +68,14 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         return self.storeArray.count
     }
     
@@ -90,13 +88,13 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
         return cell
     }
     
+    //Genearte Timestamp
     var Timestamp: String {
         return "\(NSDate().timeIntervalSince1970)"
     }
     
-    
+    // In the session method, photo is received from peers and decoded into string and stored in the array.
     func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
-        // when receiving a data
         dispatch_async(dispatch_get_main_queue(), {
             let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             loadingNotification.mode = MBProgressHUDMode.Indeterminate
@@ -106,9 +104,7 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
             var photoDic:[NSString:NSString] = ["name":"\(peerID.displayName)","time":self.Timestamp,"data":msg]
             self.storeArray.append(photoDic)
             self.sortedArray = reverse(self.storeArray)
-            print("finished")
             loadingNotification.hide(true, afterDelay:1)
-            
 
         })
     }
@@ -130,53 +126,5 @@ class InRangeTableViewController: UITableViewController,MCSessionDelegate {
         
     }
 
-    
-    
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -6,37 +6,53 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class is the UITableViewController for Discover Tab.
+    Implement the search bar and search display.  User can search other users by name.
+    Display suggest users for user to follow according to user's current follower.
+    Allow user to tab into a certain cell to see details of that user.
+*/
+
 import UIKit
 import Alamofire
 import SwiftyJSON
 
 class DiscoverTableViewController: UITableViewController, UISearchResultsUpdating {
     
+    //variable for token
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     
+    //varibales for fetching suggest users data
     var recommendJson:JSON = nil
     var recommendError:AnyObject? = nil
     var recommendSorted:Array<JSON> = []
     
+    //variables for fetching search data
     var searchJson:JSON = nil
     var searchError:AnyObject? = nil
     var resultSearchController = UISearchController()
     
+    //cell identifier
     let cellIdentifier:String = "dicoverCell"
-
+    
+    //load table view
     override func viewDidLoad() {
-        self.tableView.rowHeight = 60
-        self.tableView.allowsSelection = false
         
+        self.tableView.rowHeight = 60
+        self.tableView.allowsSelection = true
+        
+        //register cell
         tableView.registerNib(UINib(nibName: "DiscoverTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         
         super.viewDidLoad()
         
+        //define search result controller
         self.resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
+            controller.active = false
             self.tableView.tableHeaderView = controller.searchBar
             
             return controller
@@ -47,49 +63,55 @@ class DiscoverTableViewController: UITableViewController, UISearchResultsUpdatin
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents:UIControlEvents.ValueChanged)
         
         self.navigationItem.title = "OurInstagram"
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
     }
     
+    //handle refresh
     func handleRefresh(refreshControl: UIRefreshControl){
         loadRecommend()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //fetch suggest users data and sort by number of followers
     func loadRecommend(){
+        
         let recommendUrl = "https://mobileprogram.herokuapp.com/recommendation.json"
         Alamofire.request(.GET,recommendUrl).responseJSON{
             (_,_,data,error) in
-            self.recommendJson = JSON(data!)
-            self.recommendError = error
-            
-            self.recommendSorted = self.recommendJson["data"].arrayValue
-            self.recommendSorted.sort({$0["rank"] < $1["rank"]})
-            
-            self.tableView.reloadData()
-            self.refreshControl!.endRefreshing()
+            if data != nil {
+                self.recommendJson = JSON(data!)
+                self.recommendError = error
+                
+                self.recommendSorted = self.recommendJson["data"].arrayValue
+                self.recommendSorted.sort({$0["rank"] < $1["rank"]})
+                
+                self.tableView.reloadData()
+                self.refreshControl!.endRefreshing()
+            }
+            else{
+                self.refreshControl!.endRefreshing()
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
 
     // MARK: - Table view data source
-
+    
+    // Return the number of sections.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
-
+    
+    // Return the number of rows in the section.
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
+        
         if self.resultSearchController.active {
             if self.searchJson == nil {
                 return 0
@@ -103,6 +125,7 @@ class DiscoverTableViewController: UITableViewController, UISearchResultsUpdatin
         }
     }
     
+    //assign data to cell according to row index
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! DiscoverTableViewCell
@@ -119,70 +142,48 @@ class DiscoverTableViewController: UITableViewController, UISearchResultsUpdatin
         return cell
     }
     
+    //fetch search data and update controller
     func updateSearchResultsForSearchController(searchController: UISearchController) {
+        
         let searchText = searchController.searchBar.text
         let searchUrl = "https://api.instagram.com/v1/users/search?q=\(searchText)&access_token=\(token)"
-        Alamofire.request(.GET,searchUrl).responseJSON{
+        Alamofire.request(.GET,searchUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!).responseJSON{
             (_,_,data,error) in
-            self.searchJson = JSON(data!)
-            self.searchError = error
-            self.tableView.reloadData()
+            if data != nil {
+                self.searchJson = JSON(data!)
+                self.searchError = error
+                self.tableView.reloadData()
+            }
+            else{
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
-
-        return cell
+    
+    //show user detail view when tapping the cell
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.performSegueWithIdentifier("userDetail", sender: self)
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    //prepare data for user detail view, define which user to show
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "userDetail" {
+            let userDetailViewController = segue.destinationViewController as! UserDetailViewController
+            let selectIndexPath = self.tableView.indexPathForSelectedRow()
+            if self.resultSearchController.active {
+                let row = selectIndexPath?.row
+                userDetailViewController.id = self.searchJson["data"][row!]["id"].stringValue
+                self.resultSearchController.active = false
+            }
+            else {
+                let row = selectIndexPath?.row
+                userDetailViewController.id = self.recommendSorted[row!]["id"].stringValue
+            }
+        }
     }
-    */
-
 }

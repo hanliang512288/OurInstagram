@@ -6,15 +6,22 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class is for discover table view cell.
+    Display username and profile picture in each cell.
+*/
+
 import UIKit
 import SwiftyJSON
 import Haneke
 
 class DiscoverTableViewCell: UITableViewCell {
     
+    //cell outlet
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var username: UILabel!
     
+    //data assigned by table view
     var post: SwiftyJSON.JSON? {
         didSet {
             // after 'post' is assigned by a value
@@ -22,27 +29,18 @@ class DiscoverTableViewCell: UITableViewCell {
         }
     }
     
+    //prepare for cell reuse
     override func prepareForReuse() {
         self.profilePic.image = nil
     }
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-    
+    //display data
     func setupPost(){
+        
         if let profilePicUrl = self.post?["profile_picture"].stringValue{
             var url = NSURL(string: profilePicUrl)
             self.profilePic.hnk_setImageFromURL(url!)
         }
         self.username.text = self.post?["username"].stringValue
     }
-    
 }

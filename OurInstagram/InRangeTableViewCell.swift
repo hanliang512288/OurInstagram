@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This is inrange interface that display the photos received from peers and corresponding
+    name and time.
+*/
+
 import UIKit
 
 class InRangeTableViewCell: UITableViewCell {
@@ -15,21 +20,17 @@ class InRangeTableViewCell: UITableViewCell {
             self.setupPost()
         }
     }
-//
+
     
     @IBOutlet weak var photo: UIImageView!
-    
-    
     @IBOutlet weak var peerName: UILabel!
-    
-    
     @IBOutlet weak var time: UILabel!
-    
-    
+
     override func prepareForReuse() {
         self.photo.image = nil
     }
     
+    //This method is to update the image of each cell.
     func setupPost(){
         
         self.peerName.text = String(self.post["name"]!)
@@ -50,16 +51,5 @@ class InRangeTableViewCell: UITableViewCell {
         
     }
     
-    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
     
 }

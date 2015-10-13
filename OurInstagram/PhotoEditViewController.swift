@@ -1,13 +1,15 @@
-//
 //  PhotoEditViewController.swift
 //  OurInstagram
 //
 //  Created by bragi on 4/10/2015.
 //  Copyright (c) 2015 LarryHan. All rights reserved.
-//  
-//  Provide users with functions to edit images(filters, brightness, contrast).
-//  Provide buttons to go to previous and next views.
-//
+
+/*
+    This class provides users with functions to edit images. Three filters are provided and the user can also 
+    change the brightness and contrast of the image.
+    Besides, "Reset" button is deployed to reload the original image and user can save image after adjustment.
+    This class is also responsible to jumping to next view and previous view.
+*/
 
 import Foundation
 import UIKit
@@ -16,8 +18,6 @@ import CoreGraphics
 import AssetsLibrary
 
 class PhotoEditViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
-//    var imagePicker = UIImagePickerController()
     
     var newImage: UIImage!
     
@@ -146,7 +146,8 @@ class PhotoEditViewController: UIViewController,UIImagePickerControllerDelegate,
             destinationViewController.newImage = self.imageEditView.image
         }
     }
-
+    
+    //Load the image when the view displays
     override func viewDidLoad() {
         super.viewDidLoad()
         self.originalImage = self.newImage

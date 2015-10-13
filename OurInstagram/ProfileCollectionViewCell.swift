@@ -6,18 +6,18 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class is the cell of the Collection View in the PorfileViewController.
+*/
+
 import UIKit
 
 class ProfileCollectionViewCell: UICollectionViewCell {
 
     
-    
+    //Create an image view for each cell
     @IBOutlet weak var imageEachCell: UIImageView!
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
     override func prepareForReuse() {
         self.imageEachCell.image = nil
     }

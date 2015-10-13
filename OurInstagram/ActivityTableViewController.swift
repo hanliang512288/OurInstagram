@@ -6,27 +6,40 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class is the UITableViewController for activity tab.
+    Display the posts and start follows of users whom the current user follows in Following segment.
+    Display the likes and start follows of current user in You segment
+*/
+
 import UIKit
 import Alamofire
 import SwiftyJSON
 
 class ActivityTableViewController: UITableViewController {
     
+    //variable for token
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     
+    //varibales for fetching data in Following segment
     var followingJson:JSON = nil
     var followingError:AnyObject? = nil
     var followingSorted:Array<JSON> = []
     
+    //variables for fetching data in You segment
     var youJson:JSON = nil
     var youError:AnyObject? = nil
     var youSorted:Array<JSON> = []
     
+    //cell identifier
     let cellIdentifier:String = "activityCell"
     
+    //variable for segment controller
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
+    //reload data when change segment
     @IBAction func changeTab(sender: UISegmentedControl) {
+        
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             loadFollowing()
@@ -36,12 +49,14 @@ class ActivityTableViewController: UITableViewController {
             break;
         }
     }
-
+    
+    //load view
     override func viewDidLoad() {
         
         self.tableView.rowHeight = 100
         self.tableView.allowsSelection = false
         
+        //register cell
         tableView.registerNib(UINib(nibName: "ActivityTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         
         super.viewDidLoad()
@@ -52,14 +67,11 @@ class ActivityTableViewController: UITableViewController {
         
         self.navigationItem.title = "OurInstagram"
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
+    // handle refresh
     func handleRefresh(refreshControl: UIRefreshControl){
+        
         if self.segmentedControl.selectedSegmentIndex == 0 {
             loadFollowing()
         }
@@ -67,53 +79,78 @@ class ActivityTableViewController: UITableViewController {
             loadYou()
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //fetch data for Following segment
     func loadFollowing(){
+        
         let followingUrl = "https://mobileprogram.herokuapp.com/following.json"
+        
         Alamofire.request(.GET,followingUrl).responseJSON{
             (_,_,data,error) in
-            self.followingJson = JSON(data!)
-            self.followingError = error
             
-            self.followingSorted = self.followingJson["data"].arrayValue
-            self.followingSorted.sort({$0["time"] > $1["time"]})
-            
-            self.tableView.reloadData()
-            self.refreshControl!.endRefreshing()
+            if data != nil {
+                self.followingJson = JSON(data!)
+                self.followingError = error
+                
+                self.followingSorted = self.followingJson["data"].arrayValue
+                self.followingSorted.sort({$0["time"] > $1["time"]})
+                
+                self.tableView.reloadData()
+                self.refreshControl!.endRefreshing()
+            }
+            else{
+                self.refreshControl!.endRefreshing()
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
     
+    //fetch data for You segment
     func loadYou(){
+        
         let youUrl = "https://mobileprogram.herokuapp.com/you.json"
+        
         Alamofire.request(.GET,youUrl).responseJSON{
             (_,_,data,error) in
-            self.youJson = JSON(data!)
-            self.youError = error
             
-            self.youSorted = self.youJson["data"].arrayValue
-            self.youSorted.sort({$0["time"] > $1["time"]})
-            
-            self.tableView.reloadData()
-            self.refreshControl!.endRefreshing()
+            if data != nil {
+                self.youJson = JSON(data!)
+                self.youError = error
+                
+                self.youSorted = self.youJson["data"].arrayValue
+                self.youSorted.sort({$0["time"] > $1["time"]})
+                
+                self.tableView.reloadData()
+                self.refreshControl!.endRefreshing()
+            }
+            else{
+                let alert = UIAlertView()
+                alert.title = "Network Error!"
+                alert.message = "Sorry, no network connection!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
         }
     }
 
     // MARK: - Table view data source
-
+    
+    // Return the number of sections.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
 
+    // Return the number of rows in the section.
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
+        
         if self.segmentedControl.selectedSegmentIndex == 0 {
             return self.followingSorted.count
         }
@@ -122,7 +159,9 @@ class ActivityTableViewController: UITableViewController {
         }
     }
     
+    //assign data to cell according to row index
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! ActivityTableViewCell
         
         if self.segmentedControl.selectedSegmentIndex == 0 {
@@ -131,62 +170,7 @@ class ActivityTableViewController: UITableViewController {
         else{
             cell.post = self.youSorted[indexPath.row]
         }
+        
         return cell
     }
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

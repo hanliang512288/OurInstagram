@@ -6,12 +6,19 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class is for activity table view cell.
+    Display information of posts and start follows of users whom the current user follows in each cell in Following segment.
+    Display information of likes and start follows of current user in each cell in You segment.
+*/
+
 import UIKit
 import SwiftyJSON
 import Haneke
 
 class ActivityTableViewCell: UITableViewCell {
-
+    
+    //variables for outlet
     @IBOutlet weak var option: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
@@ -19,39 +26,35 @@ class ActivityTableViewCell: UITableViewCell {
     @IBOutlet weak var mediaPic: UIImageView!
     @IBOutlet weak var followUsername: UILabel!
     
+    //data assigned by table view
     var post: SwiftyJSON.JSON? {
         didSet {
             self.setupPost()
         }
     }
     
+    //prepare for cell reuse
     override func prepareForReuse() {
         self.profilePic.image = nil
         self.mediaPic.image = nil
         self.followUsername.text = nil
     }
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-    
+    //display data
     func setupPost(){
+        
         var timeStamp = self.post?["time"].intValue
         self.time.text = timeFormat(timeStamp!)
+        
         if let profilePicUrl = self.post?["profile_picture"].stringValue{
             var url = NSURL(string: profilePicUrl)
             self.profilePic.hnk_setImageFromURL(url!)
         }
+        
         self.username.text = self.post?["username"].stringValue
         
         if self.post?["followUsername"].stringValue == "" {
+            
             if self.post?["image"].stringValue == "" {
                 self.option.text = "I start follow"
             }
@@ -64,6 +67,7 @@ class ActivityTableViewCell: UITableViewCell {
             }
         }
         else{
+            
             if self.post?["image"].stringValue == "" {
                 self.option.text = "start follow"
                 self.followUsername.text = self.post?["followUsername"].stringValue
@@ -78,14 +82,15 @@ class ActivityTableViewCell: UITableViewCell {
         }
     }
     
+    //change format of timestamp to datetime
     func timeFormat(timestamp:Int) -> String{
+        
         var date = NSDate(timeIntervalSince1970: Double(timestamp))
         let formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterStyle.MediumStyle
         formatter.timeStyle = .MediumStyle
         let timeString = formatter.stringFromDate(date)
         return timeString
-        
     }
     
 }

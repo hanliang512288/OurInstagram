@@ -1,12 +1,15 @@
-//
 //  PhotoPostViewController.swift
 //  OurInstagram
 //
 //  Created by bragi on 4/10/2015.
 //  Copyright (c) 2015 LarryHan. All rights reserved.
-//
-//  Provide users with functions to post images through calling the "Instagram" API.
-//  Provide button to go back to previous view.
+
+/*
+    This class is responsible for uploading image to Instagram with button pressed.
+    This class provides functions to find nearby friend, set up connection with friedns using Ad hoc mechanism and send 
+    image to friends by swiping on the photo.
+    This class is also responsible to jumping to next view and previous view.
+*/
 
 import Foundation
 import UIKit
@@ -19,13 +22,12 @@ import MBProgressHUD
 class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDelegate,MCBrowserViewControllerDelegate, MCSessionDelegate  {
     
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
+    let name = "mobileprogram1234"
     
     var newImage = UIImage(named: "photo.igo")
     
     //Create controller to handle document interaction
     var documentController:UIDocumentInteractionController!
-    
-    
     
     let serviceType = "Local-Chat"
     
@@ -44,7 +46,6 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
     
     //Call the "Instagram" application to post image
     @IBAction func photoPostButton(sender: UIButton) {
-        print("button photo")
         let image = self.newImage
         let filename = "photo.igo"
         let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, false)[0] as! NSString
@@ -59,13 +60,11 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
     }
     
-    
-    
     @IBAction func findFriend(sender: UIButton) {
         self.presentViewController(self.browser, animated: true, completion: nil)
     }
     
-    
+    //View initialization with gesture idetifing
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imageView.image = self.newImage
@@ -85,8 +84,7 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         view.addGestureRecognizer(upSwipe)
         view.addGestureRecognizer(downSwipe)
         
-        
-        self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
+        self.peerID = MCPeerID(displayName: name)
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
@@ -94,21 +92,14 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         self.browser = MCBrowserViewController(serviceType: serviceType, session: self.session)
         self.browser.delegate = self
         
-        // the advertiser
-        self.assistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: self.session)
-        // start advertising
-        self.assistant.start()
     }
     
+    //Action responding to "gesture" made on the image view
     func handleSwipe(sender:UISwipeGestureRecognizer) {
             swipePhoto()
     }
     
     func swipePhoto() {
-        
-        let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        loadingNotification.mode = MBProgressHUDMode.Indeterminate
-        loadingNotification.labelText = "Sending"
         
         var imageData = UIImagePNGRepresentation(self.newImage)
         let base64String = imageData.base64EncodedStringWithOptions(.allZeros)
@@ -120,42 +111,20 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         //This is send
         self.session.sendData(msg, toPeers: self.session.connectedPeers, withMode: MCSessionSendDataMode.Unreliable, error: &error)
         
-        if error != nil {
-            println("Error sending data: \(error!.localizedDescription)")
+        if error == nil {
+            let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            loadingNotification.mode = MBProgressHUDMode.Indeterminate
+            loadingNotification.labelText = "Sending"
+            loadingNotification.hide(true, afterDelay:1)
         }
-        loadingNotification.hide(true, afterDelay:1)
-        
-
-    
-        
-
-        
-//        self.updateChat(self.messageField.text, fromPeer: self.peerID)
-//        
-//        self.messageField.text = ""
-        
-        
-//        let image = self.newImage
-//        let filename = "photo.igo"
-//        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, false)[0] as! NSString
-//        let destinationPath = documentsPath.stringByAppendingString("/" + filename)
-//        let f = destinationPath.stringByExpandingTildeInPath
-//        UIImagePNGRepresentation(image).writeToFile(f, atomically:true)
-//        let fileURL = NSURL(fileURLWithPath: f)! as NSURL
-//        
-//        self.documentController = UIDocumentInteractionController(URL: fileURL)
-//        self.documentController.delegate = self
-//        documentController.UTI = "com.instagram.exclusivegram"
-//        documentController.presentOpenInMenuFromRect(CGRectZero, inView: self.view, animated: false)
-        print("Swipe photo")
-        
-        
-        
-
+        else {
+            let alert = UIAlertView()
+            alert.title = "No peers found!"
+            alert.message = "Please select a peer to connect."
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
     }
-    
-    
-
     
     // browser delegate's methods
     func browserViewControllerDidFinish(browserViewController: MCBrowserViewController!) {
@@ -173,8 +142,6 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         // when receiving a data
         dispatch_async(dispatch_get_main_queue(), {
             var msg = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
-            
-//            self.updateChat(msg, fromPeer: peerID)
         })
     }
     
@@ -186,7 +153,6 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
         
     }
     
-    
     func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!) {
         
     }
@@ -194,6 +160,7 @@ class PhotoPostViewController:UIViewController,UIDocumentInteractionControllerDe
     func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
         
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

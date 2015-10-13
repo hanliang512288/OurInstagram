@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 LarryHan. All rights reserved.
 //
 
+/*
+    This class controlll the display content and action of each cell in feed table view.
+*/
+
 import UIKit
 import SwiftyJSON
 import Haneke
@@ -14,7 +18,6 @@ import MBProgressHUD
 
 class FeedTableViewCell: UITableViewCell {
 
-    
     let username = "mobileprogram1234"
     let token = "2203590801.aabf771.701252ebb0f4425cbc8231c41a0e5732"
     
@@ -26,48 +29,48 @@ class FeedTableViewCell: UITableViewCell {
     var likeFlag = 0
     var myComment = ""
     
-    
-    
     @IBOutlet weak var name: UILabel!
-    
     @IBOutlet weak var location: UILabel!
-    
     @IBOutlet weak var time: UILabel!
-    
     @IBOutlet weak var picture: UIImageView!
-    
     @IBOutlet weak var likes: UILabel!
-    
-//    @IBOutlet weak var comments: UILabel!
-    
     @IBOutlet weak var commentsDisplay: UILabel!
-    
     @IBOutlet weak var comment: UITextField!
-
+    
+    
+    // Send button that can post certain comment to api. Return and disply error log.
     @IBAction func send(sender: UIButton) {
         
         
         if (String(self.comment.text) != ""){
         
-        self.myComment = self.comment.text
-        self.comment.text = ""
-        print(self.myComment)
-        self.comment.resignFirstResponder()
-        self.numOfComments = self.numOfComments! + 1
-        var head = "\(numOfComments!) COMMENTS:\n"
-        self.commentsString = "\(username):\(self.myComment)\n"+self.commentsString
-        self.commentsDisplay.text = head + self.commentsString
-        
-        var commentURL = "https://api.instagram.com/v1/media/\(self.mediaID)/comments"
-        
-        Alamofire.request(.POST,commentURL).responseJSON{
-            (_,_,data,error)->Void in
-            var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
-            hud.mode = MBProgressHUDMode.Text
-            hud.labelText = "Comment response is"
-            hud.detailsLabelText = "\(data)"
-            hud.hide(true, afterDelay: 1)
-        }
+            self.myComment = self.comment.text
+            self.comment.text = ""
+            self.comment.resignFirstResponder()
+            self.numOfComments = self.numOfComments! + 1
+            var head = "\(numOfComments!) COMMENTS:\n"
+            self.commentsString = "\(username):\(self.myComment)\n"+self.commentsString
+            self.commentsDisplay.text = head + self.commentsString
+            
+            var commentURL = "https://api.instagram.com/v1/media/\(self.mediaID)/comments"
+            
+            Alamofire.request(.POST,commentURL).responseJSON{
+                (_,_,data,error)->Void in
+                if data != nil {
+                    var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
+                    hud.mode = MBProgressHUDMode.Text
+                    hud.labelText = "Comment response is"
+                    hud.detailsLabelText = "\(data)"
+                    hud.hide(true, afterDelay: 1)
+                }
+                else{
+                    let alert = UIAlertView()
+                    alert.title = "Network Error!"
+                    alert.message = "Sorry, no network connection!"
+                    alert.addButtonWithTitle("OK")
+                    alert.show()
+                }
+            }
         
         }
         
@@ -75,11 +78,9 @@ class FeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var portrait: UIImageView!
     
-   
-    
     @IBOutlet weak var likeOutlet: UIButton!
   
-   
+   //Like button action so that we can like or dislike and return the json error of like request.
     @IBAction func like(sender: UIButton) {
         self.likeFlag += 1
         var remain = self.likeFlag % 2
@@ -89,39 +90,50 @@ class FeedTableViewCell: UITableViewCell {
             Alamofire.request(.POST,likeURL).responseJSON{
                 (_,_,data,error)->Void in
                 
-//                var cell: UITableViewCell = self.superview as! UITableViewCell
-//                var table: UITableView = cell.superview as! UITableView
-//                let IndexPath = table.indexPathForCell(cell)
-                
-       
-                var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
-                print(hud.dynamicType)
-                hud.mode = MBProgressHUDMode.Text
-                hud.labelText = "Like response is"
-                hud.detailsLabelText = "\(data)"
-                hud.hide(true, afterDelay: 1)
-                
-                
+                if data != nil {
+                    var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
+                    hud.mode = MBProgressHUDMode.Text
+                    hud.labelText = "Like response is"
+                    hud.detailsLabelText = "\(data)"
+                    hud.hide(true, afterDelay: 1)
+                }
+                else{
+                    let alert = UIAlertView()
+                    alert.title = "Network Error!"
+                    alert.message = "Sorry, no network connection!"
+                    alert.addButtonWithTitle("OK")
+                    alert.show()
+                }
             }
             
             self.likeOutlet.setTitle("Dislike", forState: UIControlState.Normal)
             var likesHead = "\(numOfLikes! + 1) LIKES:\n"
-            self.likes.text = likesHead + "\(username)," + self.likesString
-
+            if self.likesString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != ""{
+                self.likes.text = likesHead + "\(username)," + self.likesString
+            }else{
+                self.likes.text = likesHead + "\(username)" + self.likesString
+            }
         }else{
             
             var dislikeURL = "https://api.instagram.com/v1/media/\(self.mediaID)/likes?access_token=\(token)"
-            
+
             Alamofire.request(.DELETE,dislikeURL).responseJSON{
                 (_,_,data,error)->Void in
                 
-                var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
-                hud.mode = MBProgressHUDMode.Text
-                hud.labelText = "Dislike response is"
-                hud.detailsLabelText = "\(data)"
-                hud.hide(true, afterDelay: 1)
-                
-                
+                if data != nil {
+                    var hud = MBProgressHUD.showHUDAddedTo(self, animated: true)
+                    hud.mode = MBProgressHUDMode.Text
+                    hud.labelText = "Dislike response is"
+                    hud.detailsLabelText = "\(data)"
+                    hud.hide(true, afterDelay: 1)
+                }
+                else{
+                    let alert = UIAlertView()
+                    alert.title = "Network Error!"
+                    alert.message = "Sorry, no network connection!"
+                    alert.addButtonWithTitle("OK")
+                    alert.show()
+                }
             }
             
             self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
@@ -133,45 +145,19 @@ class FeedTableViewCell: UITableViewCell {
     
     var post: SwiftyJSON.JSON? {
         didSet {
-            // after 'post' is assigned by a value
             self.setupPost()
         }
     }
     
     override func prepareForReuse() {
         self.picture.image = nil
-//        like.setTitle("Like", forState: UIControlState.Normal)
         self.likesString = ""
         self.commentsString = ""
         self.portrait.image = nil
         self.likeOutlet.setTitle("Like", forState: UIControlState.Normal)
-//        self.comment.delegate = self
-        
-//        self.comments.delegate = self
-
     }
     
-    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//        self.comments.placeholder = "Comments"
-//        self.comments.returnKeyType = UIReturnKeyType.Done
-//        
-//    }
-//    
-//    func textFieldShouldReturn(textField:UITextField)->Bool{
-//        textField.resignFirstResponder()
-//        print("abvc")
-//        return true;
-//    }
-
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-    
+    //Format timestamp into date and time.
     func timeFormat(timestamp:Int) -> String{
         var date = NSDate(timeIntervalSince1970: Double(timestamp))
         let formatter = NSDateFormatter()
@@ -182,6 +168,7 @@ class FeedTableViewCell: UITableViewCell {
         
     }
     
+    // Method to help display comments of certain media.
     func displayComments(commentsJson:SwiftyJSON.JSON)->String{
         self.numOfComments! = commentsJson["count"].intValue
         var numOfComInJson = commentsJson["data"].count
@@ -233,12 +220,11 @@ class FeedTableViewCell: UITableViewCell {
         if likeArrayLength>1{
             for ele in 0...(likeArrayLength-2){
                 self.likesString = self.likesString + likeArray[ele]["username"].stringValue + ","        }
-             self.likesString = self.likesString  + likeArray[likeArrayLength-1]["username"].stringValue
+                self.likesString = self.likesString  + likeArray[likeArrayLength-1]["username"].stringValue
             
         }else if likeArrayLength>0{
             self.likesString = self.likesString  + likeArray[likeArrayLength-1]["username"].stringValue
         }
-        
         self.likes.text = likesHead + self.likesString
         
         //Display comments
